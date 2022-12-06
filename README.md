@@ -21,9 +21,26 @@ function int Fibonacci(int n)
 }
 ```
 
-```
+```sena FizzBuzz.sn
+FizzBuzz(100);
+
 function int FizzBuzz(int n)
 {
-    
+    for (int i = 0; i < n; i++)
+    {
+        if (n % 15 == 0)
+        {
+            Console.WriteLine("FizzBuzz");
+        }elif(n % 3 == 0)
+        {
+            Console.WriteLine("Fizz");
+        }elif(n % 5 == 0)
+        {
+            Console.WriteLine("Buzz");
+        }else
+        {
+            Console.WriteLine(n);
+        }
+    }
 }
 ```
