@@ -101,6 +101,18 @@ public class Lexer
 
                 retToken = new Token(">", TokenType.GT);
                 break;
+            case '(':
+                retToken = new Token("(", TokenType.LPAREN);
+                break;
+            case ')':
+                retToken = new Token(")", TokenType.RPAREN);
+                break;
+            case '{':
+                retToken = new Token("{", TokenType.LBRACE);
+                break;
+            case '}':
+                retToken = new Token("}", TokenType.RBRACE);
+                break;
             case ',':
                 retToken = new Token(",", TokenType.CONMA);
                 break;
