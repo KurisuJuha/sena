@@ -5,7 +5,7 @@ sena is a programming language.
 ```sena fibonacci.sn
 Console.WriteLine(fib(20));
 
-func int fib(int n)
+function int Fibonacci(int n)
 {
     mutable int a = 0;
     mutable int b = 1;
@@ -18,5 +18,12 @@ func int fib(int n)
     }
 
     return a;
+}
+```
+
+```
+function int FizzBuzz(int n)
+{
+    
 }
 ```
