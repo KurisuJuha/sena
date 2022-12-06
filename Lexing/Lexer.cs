@@ -49,6 +49,13 @@ public class Lexer
                 retToken = new Token("%", TokenType.PERCENT);
                 break;
             case '|':
+                if (nextChar == '|')
+                {
+                    retToken = new Token("||", TokenType.COND_OR);
+                    ReadChar();
+                    break;
+                }
+
                 retToken = new Token("|", TokenType.OR);
                 break;
             case '&':
