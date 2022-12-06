@@ -29,7 +29,7 @@ public class Lexer
     public Token NextToken()
     {
         SkipWhiteSpace();
-        Token retToken = new Token();
+        Token retToken = new Token(currentChar.ToString(), TokenType.ILLEGAL);
 
         switch (currentChar)
         {
@@ -37,6 +37,11 @@ public class Lexer
                 if (IsDigit(currentChar))
                 {
                     retToken = new Token(ReadIntegerLiteral(), TokenType.INTEGER);
+                }
+                else if(IsLetter(currentChar))
+                {
+                    string literal = ReadIdentifier();
+                    retToken = new Token(literal, LookUpIdentifier(literal));
                 }
                 break;
         }
@@ -67,6 +72,29 @@ public class Lexer
         }
 
         return literal;
+    }
+
+    private string ReadIdentifier()
+    {
+        string literal = currentChar.ToString();
+
+        while (IsLetter(nextChar))
+        {
+            literal += nextChar;
+            ReadChar();
+        }
+
+        return literal;
+    }
+
+    private TokenType LookUpIdentifier(string literal)
+    {
+        if (Token.keywords.TryGetValue(literal, out TokenType value))
+        {
+            return value;
+        }
+
+        return TokenType.IDENTIFIER;
     }
 
     private void ReadChar()
