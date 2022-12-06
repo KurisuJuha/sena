@@ -42,6 +42,12 @@ public class Lexer
             case '*':
                 retToken = new Token("*", TokenType.ASTERISK);
                 break;
+            case '/':
+                retToken = new Token("/", TokenType.SLASH);
+                break;
+            case '%':
+                retToken = new Token("%", TokenType.PERCENT);
+                break;
             default:
                 if (IsDigit(currentChar))
                 {
