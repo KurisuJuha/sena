@@ -93,6 +93,9 @@ public class Lexer
             case '.':
                 retToken = new Token(".", TokenType.PERIOD);
                 break;
+            case ';':
+                retToken = new Token(";", TokenType.SEMICOLON);
+                break;
             default:
                 if (IsDigit(currentChar))
                 {
