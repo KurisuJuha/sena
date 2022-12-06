@@ -11,4 +11,17 @@ public enum TokenType
     IDENTIFIER,
     // 整数
     INTEGER,
+
+    // 演算子
+    PLUS,           // +
+    MINUS,          // -
+    ASTERISK,      // *
+    SLASH,          // /
+    PERCENT,        // %
+    PIPE,           // |
+    AND,            // &
+    BANG,           // !
+    ASSIGN,         // =
+
+    SEMICOLON,
 }

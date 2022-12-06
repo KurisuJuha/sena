@@ -33,6 +33,9 @@ public class Lexer
 
         switch (currentChar)
         {
+            case '+':
+                retToken = new Token("+", TokenType.PLUS);
+                break;
             default:
                 if (IsDigit(currentChar))
                 {

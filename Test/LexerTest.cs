@@ -45,6 +45,33 @@ public class LexerTest
     }
 
     [Fact]
+    public void NextToken3()
+    {
+        Lexer lexer = new Lexer("+ - * / % | & ! =");
+
+        var tokenList = new List<Token>()
+        {
+            new Token("+", TokenType.PLUS),
+            new Token("-", TokenType.MINUS),
+            new Token("*", TokenType.ASTERISK),
+            new Token("/", TokenType.SLASH),
+            new Token("%", TokenType.PERCENT),
+            new Token("|", TokenType.PIPE),
+            new Token("&", TokenType.AND),
+            new Token("!", TokenType.BANG),
+            new Token("=", TokenType.ASSIGN),
+        };
+
+        foreach (var testToken in tokenList)
+        {
+            var token = lexer.NextToken();
+
+            Assert.Equal(testToken.literal, token.literal);
+            Assert.Equal(testToken.tokenType, token.tokenType);
+        }
+    }
+
+    [Fact]
     public void IsLetter1()
     {
         var letterList = new List<char>()
