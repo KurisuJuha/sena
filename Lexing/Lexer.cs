@@ -82,9 +82,23 @@ public class Lexer
                 retToken = new Token("=", TokenType.EQ);
                 break;
             case '<':
+                if (nextChar == '=')
+                {
+                    retToken = new Token("<=", TokenType.LT_EQ);
+                    ReadChar();
+                    break;
+                }
+
                 retToken = new Token("<", TokenType.LT);
                 break;
             case '>':
+                if (nextChar == '=')
+                {
+                    retToken = new Token(">=", TokenType.GT_EQ);
+                    ReadChar();
+                    break;
+                }
+
                 retToken = new Token(">", TokenType.GT);
                 break;
             case ',':
@@ -101,7 +115,7 @@ public class Lexer
                 {
                     retToken = new Token(ReadIntegerLiteral(), TokenType.INTEGER);
                 }
-                else if(IsLetter(currentChar))
+                else if (IsLetter(currentChar))
                 {
                     string literal = ReadIdentifier();
                     retToken = new Token(literal, LookUpIdentifier(literal));
