@@ -36,6 +36,9 @@ public class Lexer
             case '+':
                 retToken = new Token("+", TokenType.PLUS);
                 break;
+            case '-':
+                retToken = new Token("-", TokenType.MINUS);
+                break;
             default:
                 if (IsDigit(currentChar))
                 {
