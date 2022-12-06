@@ -87,4 +87,23 @@ public class LexerTest
             Assert.True(Lexer.IsDigit(d));
         }
     }
+
+    [Fact]
+    public void IsDigit2()
+    {
+        var digitList = new List<char>()
+        {
+            ':',
+            '[',
+            ']',
+            '~',
+            '=',
+            '#',
+        };
+
+        foreach (var d in digitList)
+        {
+            Assert.False(Lexer.IsLetter(d));
+        }
+    }
 }
