@@ -59,7 +59,7 @@ public class LexerTest
             new Token("|", TokenType.PIPE),
             new Token("&", TokenType.AND),
             new Token("!", TokenType.BANG),
-            new Token("=", TokenType.ASSIGN),
+            new Token("=", TokenType.EQ),
         };
 
         foreach (var testToken in tokenList)

@@ -58,7 +58,7 @@ public class Lexer
                 retToken = new Token("!", TokenType.BANG);
                 break;
             case '=':
-                retToken = new Token("=", TokenType.ASSIGN);
+                retToken = new Token("=", TokenType.EQ);
                 break;
             default:
                 if (IsDigit(currentChar))

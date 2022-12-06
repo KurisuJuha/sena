@@ -15,13 +15,13 @@ public enum TokenType
     // 演算子
     PLUS,           // +
     MINUS,          // -
-    ASTERISK,      // *
+    ASTERISK,       // *
     SLASH,          // /
     PERCENT,        // %
     PIPE,           // |
     AND,            // &
     BANG,           // !
-    ASSIGN,         // =
+    EQ,             // =
 
     SEMICOLON,
 }
