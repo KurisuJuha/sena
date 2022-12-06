@@ -55,6 +55,12 @@ public class Lexer
                 retToken = new Token("&", TokenType.AND);
                 break;
             case '!':
+                if (nextChar == '=')
+                {
+                    retToken = new Token("!=", TokenType.NOT_EQ);
+                    break;
+                }
+
                 retToken = new Token("!", TokenType.BANG);
                 break;
             case '=':
