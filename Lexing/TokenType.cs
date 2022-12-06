@@ -27,6 +27,8 @@ public enum TokenType
     COND_OR,        // ||
     LT,             // <
     GT,             // >
+    LT_EQ,          // <=
+    GT_EQ,          // >=
 
     CONMA,          // ,
     PERIOD,         // .
