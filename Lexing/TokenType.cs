@@ -27,8 +27,8 @@ public enum TokenType
     COND_OR,        // ||
     LT,             // <
     GT,             // >
+
     CONMA,          // ,
     PERIOD,         // .
-
-    SEMICOLON,
+    SEMICOLON,      // ;
 }

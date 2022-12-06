@@ -52,12 +52,20 @@ public class Lexer
                 retToken = new Token("|", TokenType.OR);
                 break;
             case '&':
+                if (nextChar == '&')
+                {
+                    retToken = new Token("&&", TokenType.COND_AND);
+                    ReadChar();
+                    break;
+                }
+
                 retToken = new Token("&", TokenType.AND);
                 break;
             case '!':
                 if (nextChar == '=')
                 {
                     retToken = new Token("!=", TokenType.NOT_EQ);
+                    ReadChar();
                     break;
                 }
 
