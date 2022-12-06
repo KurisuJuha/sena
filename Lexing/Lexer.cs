@@ -87,6 +87,12 @@ public class Lexer
             case '>':
                 retToken = new Token(">", TokenType.GT);
                 break;
+            case ',':
+                retToken = new Token(",", TokenType.CONMA);
+                break;
+            case '.':
+                retToken = new Token(".", TokenType.PERIOD);
+                break;
             default:
                 if (IsDigit(currentChar))
                 {
