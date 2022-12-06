@@ -30,6 +30,11 @@ public enum TokenType
     LT_EQ,          // <=
     GT_EQ,          // >=
 
+    LPAREN,         // (
+    RPAREN,         // )
+    LBRACE,         // {
+    RBRACE,         // }
+
     CONMA,          // ,
     PERIOD,         // .
     SEMICOLON,      // ;
