@@ -48,6 +48,18 @@ public class Lexer
             case '%':
                 retToken = new Token("%", TokenType.PERCENT);
                 break;
+            case '|':
+                retToken = new Token("|", TokenType.PERCENT);
+                break;
+            case '&':
+                retToken = new Token("&", TokenType.AND);
+                break;
+            case '!':
+                retToken = new Token("!", TokenType.BANG);
+                break;
+            case '=':
+                retToken = new Token("=", TokenType.ASSIGN);
+                break;
             default:
                 if (IsDigit(currentChar))
                 {
