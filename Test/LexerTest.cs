@@ -45,4 +45,23 @@ public class LexerTest
             Assert.True(Lexer.IsLetter(c));
         }
     }
+
+    [Fact]
+    public void IsLetter2()
+    {
+        var letterList = new List<char>()
+        {
+            ':',
+            '[',
+            ']',
+            '~',
+            '=',
+            '#',
+        };
+
+        foreach (var c in letterList)
+        {
+            Assert.False(Lexer.IsLetter(c));
+        }
+    }
 }
