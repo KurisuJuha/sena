@@ -18,10 +18,17 @@ public enum TokenType
     ASTERISK,       // *
     SLASH,          // /
     PERCENT,        // %
-    PIPE,           // |
+    OR,             // |
     AND,            // &
     BANG,           // !
     EQ,             // =
+    NOT_EQ,         // !=
+    COND_AND,       // &&
+    COND_OR,        // ||
+    LT,             // <
+    GT,             // >
+    CONMA,          // ,
+    PERIOD,         // .
 
     SEMICOLON,
 }

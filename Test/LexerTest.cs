@@ -56,7 +56,7 @@ public class LexerTest
             new Token("*", TokenType.ASTERISK),
             new Token("/", TokenType.SLASH),
             new Token("%", TokenType.PERCENT),
-            new Token("|", TokenType.PIPE),
+            new Token("|", TokenType.OR),
             new Token("&", TokenType.AND),
             new Token("!", TokenType.BANG),
             new Token("=", TokenType.EQ),

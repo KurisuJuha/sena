@@ -49,7 +49,7 @@ public class Lexer
                 retToken = new Token("%", TokenType.PERCENT);
                 break;
             case '|':
-                retToken = new Token("|", TokenType.PIPE);
+                retToken = new Token("|", TokenType.OR);
                 break;
             case '&':
                 retToken = new Token("&", TokenType.AND);
