@@ -74,7 +74,7 @@ public class LexerTest
     [Fact]
     public void NextToken4()
     {
-        Lexer lexer = new Lexer("!= && || < > , .");
+        Lexer lexer = new Lexer("!= && || < > , . ;");
 
         var tokenList = new List<Token>()
         {
@@ -85,6 +85,7 @@ public class LexerTest
             new Token(">", TokenType.GT),
             new Token(",", TokenType.CONMA),
             new Token(".", TokenType.PERIOD),
+            new Token(";", TokenType.SEMICOLON)
         };
 
         foreach (var testToken in tokenList)
