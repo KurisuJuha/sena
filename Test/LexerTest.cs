@@ -24,6 +24,27 @@ public class LexerTest
     }
 
     [Fact]
+    public void NextToken2()
+    {
+        Lexer lexer = new Lexer("123 1234 98493829");
+
+        var tokenList = new List<Token>()
+        {
+            new Token("123", TokenType.INTEGER),
+            new Token("1234", TokenType.INTEGER),
+            new Token("98493829", TokenType.INTEGER),
+        };
+
+        foreach (var testToken in tokenList)
+        {
+            var token = lexer.NextToken();
+
+            Assert.Equal(testToken.literal, token.literal);
+            Assert.Equal(testToken.tokenType, token.tokenType);
+        }
+    }
+
+    [Fact]
     public void IsLetter1()
     {
         var letterList = new List<char>()

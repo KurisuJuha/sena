@@ -28,11 +28,45 @@ public class Lexer
 
     public Token NextToken()
     {
+        SkipWhiteSpace();
+        Token retToken = new Token();
+
         switch (currentChar)
         {
             default:
-                return new Token();
+                if (IsDigit(currentChar))
+                {
+                    retToken = new Token(ReadIntegerLiteral(), TokenType.INTEGER);
+                }
+                break;
         }
+
+        ReadChar();
+        return retToken;
+    }
+
+    private void SkipWhiteSpace()
+    {
+        while (currentChar == ' '
+            || currentChar == '\t'
+            || currentChar == '\r'
+            || currentChar == '\n')
+        {
+            ReadChar();
+        }
+    }
+
+    private string ReadIntegerLiteral()
+    {
+        string literal = currentChar.ToString();
+        while (IsDigit(nextChar))
+        {
+            literal += nextChar;
+
+            ReadChar();
+        }
+
+        return literal;
     }
 
     private void ReadChar()
