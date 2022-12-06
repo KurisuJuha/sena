@@ -81,6 +81,12 @@ public class Lexer
             case '=':
                 retToken = new Token("=", TokenType.EQ);
                 break;
+            case '<':
+                retToken = new Token("<", TokenType.LT);
+                break;
+            case '>':
+                retToken = new Token(">", TokenType.GT);
+                break;
             default:
                 if (IsDigit(currentChar))
                 {
