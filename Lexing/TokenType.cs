@@ -30,12 +30,17 @@ public enum TokenType
     LT_EQ,          // <=
     GT_EQ,          // >=
 
+    // グループ
     LPAREN,         // (
     RPAREN,         // )
     LBRACE,         // {
     RBRACE,         // }
 
+    // デリミタ
     CONMA,          // ,
     PERIOD,         // .
     SEMICOLON,      // ;
+
+    // keywords
+    LET,            // let
 }
