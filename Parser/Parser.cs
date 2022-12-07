@@ -71,11 +71,19 @@ public class Parser
         }
     }
 
-    private IExpression ParseExpression()
+    private IExpression? ParseExpression(Precedence precedence)
     {
-        return null;
+        prefixParseFunctions.TryGetValue(currentToken.tokenType, out var prefixFunc);
+        if (prefixFunc == null) return null;
+
+        var leftExpression = prefixFunc();
+
+
+
+        return leftExpression;
     }
 
+    #region Statements
     private LetStatement? ParseLetStatement()
     {
         // current = let
@@ -91,10 +99,15 @@ public class Parser
         if (!ExpectPeek(TokenType.EQ)) return null;
 
         // expression
-        expression = ParseExpression();
+        expression = ParseExpression(Precedence.LOWEST);
 
         return new LetStatement(identifier, expression);
     }
+    #endregion
+
+    #region Expressions
+
+    #endregion
 
     public Root Parse()
     {
