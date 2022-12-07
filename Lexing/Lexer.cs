@@ -132,6 +132,10 @@ public class Lexer
                     string literal = ReadIdentifier();
                     retToken = new Token(literal, LookUpIdentifier(literal));
                 }
+                else if (currentChar == (char)0)
+                {
+                    retToken = new Token(currentChar.ToString(), TokenType.EOF);
+                }
                 break;
         }
 
