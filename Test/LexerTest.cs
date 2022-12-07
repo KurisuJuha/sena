@@ -104,6 +104,25 @@ public class LexerTest
     }
 
     [Fact]
+    public void NextToken5()
+    {
+        Lexer lexer = new Lexer("let");
+
+        var tokenList = new List<Token>()
+        {
+            new Token("let", TokenType.LET),
+        };
+
+        foreach (var testToken in tokenList)
+        {
+            var token = lexer.NextToken();
+
+            Assert.Equal(testToken.literal, token.literal);
+            Assert.Equal(testToken.tokenType, token.tokenType);
+        }
+    }
+
+    [Fact]
     public void IsLetter1()
     {
         var letterList = new List<char>()
