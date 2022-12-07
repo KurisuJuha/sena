@@ -10,7 +10,7 @@ public enum TokenType
     // 識別子
     IDENTIFIER,
     // 整数
-    INTEGER,
+    INTEGER_LITERAL,
 
     // 演算子
     PLUS,           // +
@@ -42,6 +42,7 @@ public enum TokenType
     SEMICOLON,      // ;
 
     // keywords
+    INT,            // int
     LET,            // let
     IF,             // if
     ELSE,           // else

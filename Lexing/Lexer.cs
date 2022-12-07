@@ -125,7 +125,7 @@ public class Lexer
             default:
                 if (IsDigit(currentChar))
                 {
-                    retToken = new Token(ReadIntegerLiteral(), TokenType.INTEGER);
+                    retToken = new Token(ReadIntegerLiteral(), TokenType.INTEGER_LITERAL);
                 }
                 else if (IsLetter(currentChar))
                 {

@@ -11,7 +11,7 @@ public class LexerTest
         {
             new Token("^", TokenType.ILLEGAL),
             new Token("aiueo", TokenType.IDENTIFIER),
-            new Token("123", TokenType.INTEGER),
+            new Token("123", TokenType.INTEGER_LITERAL),
         };
 
         foreach (var testToken in tokenList)
@@ -30,9 +30,9 @@ public class LexerTest
 
         var tokenList = new List<Token>()
         {
-            new Token("123", TokenType.INTEGER),
-            new Token("1234", TokenType.INTEGER),
-            new Token("98493829", TokenType.INTEGER),
+            new Token("123", TokenType.INTEGER_LITERAL),
+            new Token("1234", TokenType.INTEGER_LITERAL),
+            new Token("98493829", TokenType.INTEGER_LITERAL),
         };
 
         foreach (var testToken in tokenList)
