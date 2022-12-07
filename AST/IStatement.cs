@@ -1,7 +1,6 @@
-﻿namespace sena.AST
-{
-	public interface IStatement
-	{
+﻿namespace sena.AST;
 
-	}
+public interface IStatement
+{
+
 }

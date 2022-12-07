@@ -1,7 +1,6 @@
-﻿namespace sena.AST
-{
-	public interface IExpression
-	{
+﻿namespace sena.AST;
 
-	}
+public interface IExpression
+{
+
 }

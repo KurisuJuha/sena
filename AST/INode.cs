@@ -1,7 +1,6 @@
-﻿namespace sena.AST
-{
-	public interface INode
-	{
+﻿namespace sena.AST;
 
-	}
+public interface INode
+{
+
 }
