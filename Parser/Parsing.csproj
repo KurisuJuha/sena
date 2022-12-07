@@ -7,4 +7,9 @@
     <RootNamespace>sena.Parsing</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AST\AST.csproj" />
+    <ProjectReference Include="..\Lexing\Lexing.csproj" />
+  </ItemGroup>
+
 </Project>
