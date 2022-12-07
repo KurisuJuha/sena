@@ -1,4 +1,6 @@
 ﻿using sena.AST;
+using sena.AST.Expressions;
+using sena.AST.Statements;
 using sena.Lexing;
 
 namespace sena.Parsing;
@@ -23,9 +25,49 @@ public class Parser
         nextToken = lexer.NextToken();
     }
 
+    private bool ExpectPeek(TokenType type)
+    {
+        if (nextToken.tokenType == type)
+        {
+            ReadToken();
+            return true;
+        }
+
+        return false;
+    }
+
     private IStatement ParseStatement()
     {
-        return null;
+        switch (currentToken.tokenType)
+        {
+            case TokenType.LET:
+                return ParseLetStatement();
+            default:
+                return null;
+        }
+    }
+
+    private LetStatement? ParseLetStatement()
+    {
+        // current = let
+
+        Identifier identifier;
+        IExpression expression = null;
+
+        // name
+        if (!ExpectPeek(TokenType.IDENTIFIER)) return null;
+        identifier = new Identifier(currentToken, currentToken.literal);
+
+        // =
+        if (!ExpectPeek(TokenType.EQ)) return null;
+
+        //TODO: expression
+        while (currentToken.tokenType != TokenType.SEMICOLON)
+        {
+            ReadToken();
+        }
+
+        return new LetStatement(identifier, expression);
     }
 
     public Root Parse()
