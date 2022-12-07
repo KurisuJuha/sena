@@ -23,8 +23,27 @@ public class Parser
         nextToken = lexer.NextToken();
     }
 
-    public Root Parse()
+    private IStatement ParseStatement()
     {
         return null;
+    }
+
+    public Root Parse()
+    {
+        List<IStatement> statements = new List<IStatement>();
+
+        while (currentToken.tokenType != TokenType.EOF)
+        {
+            IStatement statement = ParseStatement();
+
+            if (statement != null)
+            {
+                statements.Add(statement);
+            }
+
+            ReadToken();
+        }
+
+        return new Root(statements);
     }
 }
