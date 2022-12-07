@@ -71,6 +71,11 @@ public class Parser
         }
     }
 
+    private IExpression ParseExpression()
+    {
+        return null;
+    }
+
     private LetStatement? ParseLetStatement()
     {
         // current = let
@@ -85,11 +90,8 @@ public class Parser
         // =
         if (!ExpectPeek(TokenType.EQ)) return null;
 
-        //TODO: expression
-        while (currentToken.tokenType != TokenType.SEMICOLON)
-        {
-            ReadToken();
-        }
+        // expression
+        expression = ParseExpression();
 
         return new LetStatement(identifier, expression);
     }
