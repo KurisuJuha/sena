@@ -2,13 +2,19 @@
 using sena.AST.Expressions;
 using sena.AST.Statements;
 using sena.Lexing;
+using System.Collections.ObjectModel;
 
 namespace sena.Parsing;
+
+using PrefixParseFunction = Func<IExpression>;
+using InfixParseFunction = Func<IExpression, IExpression>;
 
 public class Parser
 {
     public Token currentToken { get; private set; }
     public Token nextToken { get; private set; }
+    public readonly ReadOnlyDictionary<TokenType, PrefixParseFunction> prefixParseFunctions;
+    public readonly ReadOnlyDictionary<TokenType, InfixParseFunction> infixParseFunctions;
     Lexer lexer;
 
     public Parser(Lexer lexer)
@@ -17,6 +23,24 @@ public class Parser
 
         currentToken = lexer.NextToken();
         nextToken = lexer.NextToken();
+        prefixParseFunctions = RegisterPrefixParseFunctions().AsReadOnly();
+        infixParseFunctions = RegisterInfixParseFunctions().AsReadOnly();
+    }
+
+    private Dictionary<TokenType, PrefixParseFunction> RegisterPrefixParseFunctions()
+    {
+        return new Dictionary<TokenType, PrefixParseFunction>()
+        {
+
+        };
+    }
+
+    private Dictionary<TokenType, InfixParseFunction> RegisterInfixParseFunctions()
+    {
+        return new Dictionary<TokenType, InfixParseFunction>()
+        {
+
+        };
     }
 
     private void ReadToken()
