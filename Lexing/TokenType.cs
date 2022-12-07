@@ -43,4 +43,7 @@ public enum TokenType
 
     // keywords
     LET,            // let
+    IF,             // if
+    ELSE,           // else
+    WHILE,          // while
 }
