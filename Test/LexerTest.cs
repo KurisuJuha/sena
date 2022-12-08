@@ -226,4 +226,31 @@ public class LexerTest
             Assert.False(Lexer.IsLetter(d));
         }
     }
+
+    [Fact]
+    public void Keywords1()
+    {
+        string code = @"
+let
+if
+else
+while
+return
+";
+        Lexer lexer = new Lexer(code);
+        
+        List<TokenType> tokenTypes = new List<TokenType>()
+        {
+            TokenType.LET,
+            TokenType.IF,
+            TokenType.ELSE,
+            TokenType.WHILE,
+            TokenType.RETURN,
+        };
+
+        foreach (var tokentype in tokenTypes)
+        {
+            Assert.Equal(tokentype, lexer.NextToken().tokenType);
+        }
+    }
 }

@@ -10,9 +10,14 @@ public struct Token
         ["if"] = TokenType.IF,
         ["else"] = TokenType.ELSE,
         ["while"] = TokenType.WHILE,
+        ["return"] = TokenType.RETURN,
     };
 
-    public Token() => new Token("", TokenType.ILLEGAL);
+    public Token()
+    {
+        literal = "";
+        tokenType = TokenType.ILLEGAL;
+    }
 
     public Token(string literal, TokenType tokenType)
     {
