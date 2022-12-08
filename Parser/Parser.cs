@@ -121,7 +121,7 @@ public class Parser
         }
     }
 
-    private IExpression? ParseExpression()
+    private IExpression? ParseExpression(Precedence precedence)
     {
         prefixParseFunctions.TryGetValue(currentToken.tokenType, out var prefix);
         if (prefix == null)
@@ -142,7 +142,7 @@ public class Parser
         ReadToken();
 
         //TODO : Expression部分
-        IExpression? expression = ParseExpression();
+        IExpression? expression = ParseExpression(Precedence.LOWEST);
 
         if (expression == null) return null;
         return new ReturnStatement(expression);
@@ -150,7 +150,7 @@ public class Parser
 
     private ExpressionStatement? ParseExpressionStatement()
     {
-        IExpression? expression = ParseExpression();
+        IExpression? expression = ParseExpression(Precedence.LOWEST);
 
         if (expression == null) return null;
 
@@ -170,7 +170,7 @@ public class Parser
         CurrentExpectPeek(TokenType.ASSIGN);
 
         // expression
-        IExpression? expression = ParseExpression();
+        IExpression? expression = ParseExpression(Precedence.LOWEST);
         if (expression == null) return null;
 
         return new LetStatement(identifier, expression);
@@ -201,7 +201,7 @@ public class Parser
         // opを飛ばす
         ReadToken();
 
-        IExpression? leftExpression = ParseExpression();
+        IExpression? leftExpression = ParseExpression(Precedence.LOWEST);
         if (leftExpression == null) return null;
 
         return new PrefixExpression(op, leftExpression);

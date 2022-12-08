@@ -167,4 +167,28 @@ return 433443;
             Assert.Equal(ops[i], parsedOps[i]);
         }
     }
+
+    [Fact]
+    public void InfixExpression1()
+    {
+        var tests = new List<(string code, string left, string op, string right)>()
+        {
+            ("1+1;", "1", "+", "1"),
+
+        };
+
+        foreach (var (code, left, op, right) in tests)
+        {
+            var lexer = new Lexer(code);
+            var errors = new Errors();
+            var parser = new Parser(lexer, errors, Console.WriteLine);
+            var root = parser.Parse();
+
+            errors.WriteLine(Console.WriteLine);
+
+            Assert.Equal(left, ((( root.statements[0] as ExpressionStatement).expression as InfixExpression).leftExpression as IntLiteral).value);
+            Assert.Equal(right, (((root.statements[0] as ExpressionStatement).expression as InfixExpression).rightExpression as IntLiteral).value);
+            Assert.Equal(op, ((root.statements[0] as ExpressionStatement).expression as InfixExpression).op);
+        }
+    }
 }
