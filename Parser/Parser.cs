@@ -6,8 +6,8 @@ using System.Collections.ObjectModel;
 
 namespace sena.Parsing;
 
-using PrefixParseFunction = Func<IExpression>;
-using InfixParseFunction = Func<IExpression, IExpression>;
+using PrefixParseFunction = Func<IExpression?>;
+using InfixParseFunction = Func<IExpression?, IExpression>;
 
 public class Parser
 {
@@ -33,6 +33,7 @@ public class Parser
     {
         return new Dictionary<TokenType, PrefixParseFunction>()
         {
+            [TokenType.IDENTIFIER] = ParseIdentifier,
         };
     }
 
@@ -96,20 +97,40 @@ public class Parser
         }
     }
 
-    private IStatement? ParseReturnStatement()
+    private IExpression? ParseExpression()
+    {
+        prefixParseFunctions.TryGetValue(currentToken.tokenType, out var prefix);
+        if (prefix == null) return null;
+
+        IExpression? leftExpression = prefix();
+
+        return leftExpression;
+    }
+
+    #region ParseStatements
+    private ReturnStatement? ParseReturnStatement()
     {
         // returnを飛ばす
-        ReadToken(); 
+        ReadToken();
 
         //TODO : Expression部分
-        while (currentToken.tokenType != TokenType.SEMICOLON)
-        {
-            ReadToken();
-        }
+        IExpression? expression = ParseExpression();
 
         // ;
         if (currentToken.tokenType != TokenType.SEMICOLON) return null;
+        if (expression == null) return null;
 
-        return new ReturnStatement(null);
+        return new ReturnStatement(expression);
     }
+    #endregion
+
+    #region ParseExpressions
+    private Identifier? ParseIdentifier()
+    {
+        // 識別子
+        string name = currentToken.literal;
+        ReadToken();
+        return new Identifier(name);
+    }
+    #endregion
 }

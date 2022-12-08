@@ -4,17 +4,15 @@ namespace sena.AST.Expressions;
 
 public class Identifier : IExpression
 {
-    public readonly Token token;
-    public readonly string value;
+    public readonly string name;
 
-    public Identifier(Token token, string value)
+    public Identifier(string name)
     {
-        this.token = token;
-        this.value = value;
+        this.name = name;
     }
 
     public string ToCode()
     {
-        return value;
+        return name;
     }
 }
