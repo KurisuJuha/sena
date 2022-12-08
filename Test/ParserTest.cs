@@ -74,4 +74,22 @@ piyo;
         Assert.Equal("foo", identifier2.value);
         Assert.Equal("piyo", identifier3.value);
     }
+
+    [Fact]
+    public void ReturnStatement1()
+    {
+        var code = @"
+return a;
+return b;
+return 123;
+";
+        Errors errors = new Errors();
+        Lexer lexer = new Lexer(code);
+        Parser parser = new Parser(lexer, errors);
+        Root root = parser.Parse();
+
+        errors.WriteLine(Console.WriteLine);
+
+        Assert.Equal(3, root.statements.Count);
+    }
 }
