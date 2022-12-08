@@ -38,6 +38,9 @@ public class Parser
         {
             [TokenType.IDENTIFIER] = ParseIdentifier,
             [TokenType.INTEGER_LITERAL] = ParseIntLiteral,
+            [TokenType.MINUS] = ParsePrefixExpression,
+            [TokenType.PLUS] = ParsePrefixExpression,
+            [TokenType.BANG] = ParsePrefixExpression,
         };
     }
 
@@ -96,6 +99,9 @@ public class Parser
             case TokenType.RETURN:
                 return ParseReturnStatement();
             default:
+                ExpressionStatement? expressionStatement = ParseExpressionStatement();
+                if (expressionStatement != null) return expressionStatement;
+
                 errors.AddError(currentToken.tokenType + " から始まる文は存在しません。");
                 return null;
         }
@@ -104,7 +110,11 @@ public class Parser
     private IExpression? ParseExpression()
     {
         prefixParseFunctions.TryGetValue(currentToken.tokenType, out var prefix);
-        if (prefix == null) return null;
+        if (prefix == null)
+        {
+            errors.AddError($"{currentToken.tokenType} に関連付けられているprefixParseFunctionはありません。");
+            return null;
+        }
 
         IExpression? leftExpression = prefix();
 
@@ -123,6 +133,15 @@ public class Parser
         if (expression == null) return null;
         return new ReturnStatement(expression);
     }
+
+    private ExpressionStatement? ParseExpressionStatement()
+    {
+        IExpression? expression = ParseExpression();
+
+        if (expression == null) return null;
+
+        return new ExpressionStatement(expression);
+    }
     #endregion
 
     #region ParseExpressions
@@ -140,6 +159,19 @@ public class Parser
         string value = currentToken.literal;
         ReadToken();
         return new IntLiteral(value);
+    }
+
+    private PrefixExpression? ParsePrefixExpression()
+    {
+        string op = currentToken.literal;
+
+        // opを飛ばす
+        ReadToken();
+
+        IExpression? leftExpression = ParseExpression();
+        if (leftExpression == null) return null;
+
+        return new PrefixExpression(op, leftExpression);
     }
     #endregion
 }
