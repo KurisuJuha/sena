@@ -141,4 +141,30 @@ return 433443;
             Assert.Equal(names[i], parsedNames[i]);
         }
     }
+
+    [Fact]
+    public void PrefixExpression1()
+    {
+        string code = "-1; +a; !true;";
+        Errors errors = new Errors();
+        Lexer lexer = new Lexer(code);
+        Parser parser = new Parser(lexer, errors, Console.WriteLine);
+        Root root = parser.Parse();
+        errors.WriteLine(Console.WriteLine);
+        Console.WriteLine(root.ToCode());
+
+        List<string> ops = new List<string>()
+        {
+            "-",
+            "+",
+            "!"
+        };
+
+        List<string> parsedOps = root.statements.Take(3).Select(s => ((s as ExpressionStatement).expression as PrefixExpression).op).ToList();
+
+        for (int i = 0; i < ops.Count; i++)
+        {
+            Assert.Equal(ops[i], parsedOps[i]);
+        }
+    }
 }
