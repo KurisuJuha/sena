@@ -44,24 +44,6 @@ public class Parser
         };
     }
 
-    private void ReadToken()
-    {
-        currentToken = nextToken;
-        nextToken = lexer.NextToken();
-    }
-
-    private bool ExpectPeek(TokenType type)
-    {
-        if (nextToken.tokenType == type)
-        {
-            ReadToken();
-            return true;
-        }
-
-        errors.AddError(nextToken.tokenType + " ではなく、 " + type + " である必要があります。");
-        return false;
-    }
-
     public Root Parse()
     {
         List<IStatement> statements = new List<IStatement>();
@@ -81,15 +63,53 @@ public class Parser
         return new Root(statements);
     }
 
+    private void ReadToken()
+    {
+        currentToken = nextToken;
+        nextToken = lexer.NextToken();
+    }
+
+    /// <summary>
+    /// 次のトークンが指定したTokenTypeと同じなら読み進める。違う場合はエラーとして出力する。
+    /// </summary>
+    private bool ExpectPeek(TokenType type)
+    {
+        if (nextToken.tokenType == type)
+        {
+            ReadToken();
+            return true;
+        }
+
+        errors.AddError(nextToken.tokenType + " ではなく、 " + type + " である必要があります。");
+        return false;
+    }
+
     private IStatement? ParseStatement()
     {
         switch (currentToken.tokenType)
         {
+            case TokenType.RETURN:
+                return ParseReturnStatement();
             default:
                 errors.AddError(currentToken.tokenType + " から始まる文は存在しません。");
                 return null;
         }
     }
 
+    private IStatement? ParseReturnStatement()
+    {
+        // returnを飛ばす
+        ReadToken(); 
 
+        //TODO : Expression部分
+        while (currentToken.tokenType != TokenType.SEMICOLON)
+        {
+            ReadToken();
+        }
+
+        // ;
+        if (currentToken.tokenType != TokenType.SEMICOLON) return null;
+
+        return new ReturnStatement(null);
+    }
 }
