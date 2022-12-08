@@ -90,6 +90,7 @@ return ffffff;
         Root root = parser.Parse();
 
         errors.WriteLine(Console.WriteLine);
+        Console.WriteLine(root.ToCode());
 
         Assert.Equal(3, root.statements.Count);
 

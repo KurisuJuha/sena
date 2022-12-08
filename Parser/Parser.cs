@@ -51,7 +51,7 @@ public class Parser
 
         while (currentToken.tokenType != TokenType.EOF)
         {
-            IStatement statement = ParseStatement();
+            IStatement? statement = ParseStatement();
 
             if (statement != null)
             {

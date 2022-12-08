@@ -1,6 +1,4 @@
-﻿using sena.Lexing;
-
-namespace sena.AST.Expressions;
+﻿namespace sena.AST.Expressions;
 
 public class Identifier : IExpression
 {
