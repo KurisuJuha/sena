@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 namespace sena.Parsing;
 
 using PrefixParseFunction = Func<IExpression?>;
-using InfixParseFunction = Func<IExpression?, IExpression>;
+using InfixParseFunction = Func<IExpression, IExpression?>;
 
 public class Parser
 {
@@ -15,8 +15,33 @@ public class Parser
     public Token nextToken { get; private set; }
     public readonly ReadOnlyDictionary<TokenType, PrefixParseFunction> prefixParseFunctions;
     public readonly ReadOnlyDictionary<TokenType, InfixParseFunction> infixParseFunctions;
-    Lexer lexer;
-    Errors errors;
+    public readonly ReadOnlyDictionary<TokenType, Precedence> Precedences;
+    Precedence currentPrecedence
+    {
+        get
+        {
+            if (Precedences.TryGetValue(currentToken.tokenType, out Precedence precedence))
+            {
+                return precedence;
+            }
+
+            return Precedence.LOWEST;
+        }
+    }
+    Precedence nextPrecedence
+    {
+        get
+        {
+            if (Precedences.TryGetValue(nextToken.tokenType, out Precedence precedence))
+            {
+                return precedence;
+            }
+
+            return Precedence.LOWEST;
+        }
+    }
+    readonly Lexer lexer;
+    readonly Errors errors;
     event Action<string> Log;
 
     public Parser(Lexer lexer, Errors errors, Action<string>? Log = null)
@@ -25,11 +50,27 @@ public class Parser
         this.errors = errors;
         this.Log = Console.WriteLine;
         if (Log != null) this.Log = Log;
+        Precedences = RegisterPrecedences().AsReadOnly();
         prefixParseFunctions = RegisterPrefixParseFunctions().AsReadOnly();
         infixParseFunctions = RegisterInfixParseFunctions().AsReadOnly();
 
         currentToken = lexer.NextToken();
         nextToken = lexer.NextToken();
+    }
+
+    private Dictionary<TokenType, Precedence> RegisterPrecedences()
+    {
+        return new Dictionary<TokenType, Precedence>()
+        {
+            [TokenType.EQ] = Precedence.EQUALS,
+            [TokenType.NOT_EQ] = Precedence.EQUALS,
+            [TokenType.LT] = Precedence.LESSGREATER,
+            [TokenType.GT] = Precedence.LESSGREATER,
+            [TokenType.PLUS] = Precedence.SUM,
+            [TokenType.MINUS] = Precedence.SUM,
+            [TokenType.ASTERISK] = Precedence.PRODUCT,
+            [TokenType.SLASH] = Precedence.PRODUCT,
+        };
     }
 
     private Dictionary<TokenType, PrefixParseFunction> RegisterPrefixParseFunctions()
@@ -48,7 +89,14 @@ public class Parser
     {
         return new Dictionary<TokenType, InfixParseFunction>()
         {
-
+            [TokenType.PLUS] = ParseInfixExpression,
+            [TokenType.MINUS] = ParseInfixExpression,
+            [TokenType.SLASH] = ParseInfixExpression,
+            [TokenType.ASTERISK] = ParseInfixExpression,
+            [TokenType.EQ] = ParseInfixExpression,
+            [TokenType.NOT_EQ] = ParseInfixExpression,
+            [TokenType.LT] = ParseInfixExpression,
+            [TokenType.GT] = ParseInfixExpression,
         };
     }
 
@@ -205,6 +253,20 @@ public class Parser
         if (leftExpression == null) return null;
 
         return new PrefixExpression(op, leftExpression);
+    }
+
+    private InfixExpression? ParseInfixExpression(IExpression left)
+    {
+        Precedence precedence = currentPrecedence;
+        string op = currentToken.literal;
+
+        // +とか-とかをぶっ飛ばす
+        ReadToken();
+
+        IExpression? right = ParseExpression(precedence);
+        if (right == null) return null;
+
+        return new InfixExpression(op, left, right);
     }
     #endregion
 }
