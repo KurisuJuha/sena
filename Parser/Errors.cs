@@ -9,5 +9,13 @@
         {
             _errors.Add(error);
         }
+
+        public void WriteLine(Action<string> Write)
+        {
+            foreach (var error in _errors)
+            {
+                Write(error);
+            }
+        }
     }
 }

@@ -27,11 +27,7 @@ let cfawfaw = 444444444;
         Parser parser = new Parser(lexer, errors);
         Root root = parser.Parse();
 
-        //        Console.WriteLine(root.ToCode());
-        foreach (var error in errors.errors)
-        {
-            Console.WriteLine(error);
-        }
+        errors.WriteLine(Console.WriteLine);
 
         Assert.Equal(3, root.statements.Count);
 
@@ -61,6 +57,8 @@ piyo;
         Lexer lexer = new Lexer(code);
         Parser parser = new Parser(lexer, errors);
         Root root = parser.Parse();
+
+        errors.WriteLine(Console.WriteLine);
 
         Assert.Equal(3, root.statements.Count);
 

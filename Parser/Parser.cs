@@ -81,8 +81,13 @@ public class Parser
         return new Root(statements);
     }
 
-    private IStatement ParseStatement()
+    private IStatement? ParseStatement()
     {
-
+        switch (currentToken.tokenType)
+        {
+            default:
+                errors.AddError(currentToken.tokenType + " から始まる文は存在しません。");
+                return null;
+        }
     }
 }
