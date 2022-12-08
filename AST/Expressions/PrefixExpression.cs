@@ -3,16 +3,16 @@
 public class PrefixExpression : IExpression
 {
     public string op;
-    public IExpression leftExpression;
+    public IExpression rightExpression;
 
-    public PrefixExpression(string op, IExpression leftExpression)
+    public PrefixExpression(string op, IExpression rightExpression)
     {
         this.op = op;
-        this.leftExpression = leftExpression;
+        this.rightExpression = rightExpression;
     }
 
     public string ToCode()
     {
-        return "(" + op + leftExpression.ToCode() + ")";
+        return "(" + op + rightExpression.ToCode() + ")";
     }
 }
