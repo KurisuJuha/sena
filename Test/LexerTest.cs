@@ -26,11 +26,12 @@ public class LexerTest
     [Fact]
     public void NextToken2()
     {
-        Lexer lexer = new Lexer("123 1234 98493829");
+        Lexer lexer = new Lexer("123;1234 98493829");
 
         var tokenList = new List<Token>()
         {
             new Token("123", TokenType.INTEGER_LITERAL),
+            new Token(";", TokenType.SEMICOLON),
             new Token("1234", TokenType.INTEGER_LITERAL),
             new Token("98493829", TokenType.INTEGER_LITERAL),
         };

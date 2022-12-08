@@ -17,11 +17,14 @@ public class Parser
     public readonly ReadOnlyDictionary<TokenType, InfixParseFunction> infixParseFunctions;
     Lexer lexer;
     Errors errors;
+    event Action<string> Log;
 
-    public Parser(Lexer lexer, Errors errors)
+    public Parser(Lexer lexer, Errors errors, Action<string>? Log = null)
     {
         this.lexer = lexer;
         this.errors = errors;
+        this.Log = Console.WriteLine;
+        if (Log != null) this.Log = Log;
         prefixParseFunctions = RegisterPrefixParseFunctions().AsReadOnly();
         infixParseFunctions = RegisterInfixParseFunctions().AsReadOnly();
 
@@ -34,6 +37,7 @@ public class Parser
         return new Dictionary<TokenType, PrefixParseFunction>()
         {
             [TokenType.IDENTIFIER] = ParseIdentifier,
+            [TokenType.INTEGER_LITERAL] = ParseIntLiteral,
         };
     }
 
@@ -116,10 +120,7 @@ public class Parser
         //TODO : Expression部分
         IExpression? expression = ParseExpression();
 
-        // ;
-        if (currentToken.tokenType != TokenType.SEMICOLON) return null;
         if (expression == null) return null;
-
         return new ReturnStatement(expression);
     }
     #endregion
@@ -131,6 +132,14 @@ public class Parser
         string name = currentToken.literal;
         ReadToken();
         return new Identifier(name);
+    }
+
+    private IntLiteral? ParseIntLiteral()
+    {
+        // int
+        string value = currentToken.literal;
+        ReadToken();
+        return new IntLiteral(value);
     }
     #endregion
 }

@@ -108,4 +108,37 @@ return ffffff;
             Assert.Equal(names[i], parsedNames[i]);
         }
     }
+
+    [Fact]
+    public void IntLiteral1()
+    {
+        var code = @"
+return 123;
+return 5555;
+return 433443;
+";
+        Errors errors = new Errors();
+        Lexer lexer = new Lexer(code);
+        Parser parser = new Parser(lexer, errors, Console.WriteLine);
+        Root root = parser.Parse();
+
+        errors.WriteLine(Console.WriteLine);
+        Console.WriteLine(root.ToCode());
+
+        Assert.Equal(3, root.statements.Count);
+
+        List<string> names = new List<string>()
+        {
+            "123",
+            "5555",
+            "433443",
+        };
+
+        List<string> parsedNames = root.statements.Take(3).Select(s => ((IntLiteral)((ReturnStatement)s).expression).value).ToList();
+
+        for (int i = 0; i < names.Count; i++)
+        {
+            Assert.Equal(names[i], parsedNames[i]);
+        }
+    }
 }
