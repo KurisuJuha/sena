@@ -21,7 +21,8 @@ public enum TokenType
     OR,             // |
     AND,            // &
     BANG,           // !
-    EQ,             // =
+    ASSIGN,         // =
+    EQ,             // ==
     NOT_EQ,         // !=
     COND_AND,       // &&
     COND_OR,        // ||

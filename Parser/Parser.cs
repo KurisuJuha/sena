@@ -92,12 +92,26 @@ public class Parser
         return false;
     }
 
+    private bool CurrentExpectPeek(TokenType type)
+    {
+        if (currentToken.tokenType == type)
+        {
+            ReadToken();
+            return true;
+        }
+
+        errors.AddError(currentToken.tokenType + " ではなく、 " + type + " である必要があります。");
+        return false;
+    }
+
     private IStatement? ParseStatement()
     {
         switch (currentToken.tokenType)
         {
             case TokenType.RETURN:
                 return ParseReturnStatement();
+            case TokenType.LET:
+                return ParseLetStatement();
             default:
                 ExpressionStatement? expressionStatement = ParseExpressionStatement();
                 if (expressionStatement != null) return expressionStatement;
@@ -141,6 +155,25 @@ public class Parser
         if (expression == null) return null;
 
         return new ExpressionStatement(expression);
+    }
+
+    private LetStatement? ParseLetStatement()
+    {
+        // letをぶっ飛ばす
+        ReadToken();
+
+        // hoge
+        Identifier? identifier = ParseIdentifier();
+        if (identifier == null) return null;
+
+        // =
+        CurrentExpectPeek(TokenType.ASSIGN);
+
+        // expression
+        IExpression? expression = ParseExpression();
+        if (expression == null) return null;
+
+        return new LetStatement(identifier, expression);
     }
     #endregion
 

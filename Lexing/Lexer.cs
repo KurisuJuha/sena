@@ -79,7 +79,14 @@ public class Lexer
                 retToken = new Token("!", TokenType.BANG);
                 break;
             case '=':
-                retToken = new Token("=", TokenType.EQ);
+                if (nextChar == '=')
+                {
+                    retToken = new Token("==", TokenType.EQ);
+                    ReadChar();
+                    break;
+                }
+
+                retToken = new Token("=", TokenType.ASSIGN);
                 break;
             case '<':
                 if (nextChar == '=')
