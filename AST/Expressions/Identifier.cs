@@ -12,4 +12,9 @@ public class Identifier : IExpression
         this.token = token;
         this.value = value;
     }
+
+    public string ToCode()
+    {
+        return value;
+    }
 }

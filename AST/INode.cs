@@ -2,5 +2,5 @@
 
 public interface INode
 {
-
+    public string ToCode();
 }

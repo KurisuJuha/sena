@@ -10,4 +10,9 @@ public class Root : INode
 	{
 		this.statements = statements.AsReadOnly();
 	}
+
+	public string ToCode()
+	{
+		return string.Join('\n', statements.Select(s => s.ToCode()));
+	}
 }

@@ -12,4 +12,9 @@ public class LetStatement : IStatement
         this.name = name;
         this.value = value;
     }
+
+    public string ToCode()
+    {
+        return "let " + name.ToCode() + " = " + value.ToCode() + ";";
+    }
 }

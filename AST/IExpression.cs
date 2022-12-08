@@ -1,6 +1,6 @@
 ﻿namespace sena.AST;
 
-public interface IExpression
+public interface IExpression : INode
 {
 
 }

@@ -16,22 +16,23 @@ public class Parser
     public readonly ReadOnlyDictionary<TokenType, PrefixParseFunction> prefixParseFunctions;
     public readonly ReadOnlyDictionary<TokenType, InfixParseFunction> infixParseFunctions;
     Lexer lexer;
+    Errors errors;
 
-    public Parser(Lexer lexer)
+    public Parser(Lexer lexer, Errors errors)
     {
         this.lexer = lexer;
+        this.errors = errors;
+        prefixParseFunctions = RegisterPrefixParseFunctions().AsReadOnly();
+        infixParseFunctions = RegisterInfixParseFunctions().AsReadOnly();
 
         currentToken = lexer.NextToken();
         nextToken = lexer.NextToken();
-        prefixParseFunctions = RegisterPrefixParseFunctions().AsReadOnly();
-        infixParseFunctions = RegisterInfixParseFunctions().AsReadOnly();
     }
 
     private Dictionary<TokenType, PrefixParseFunction> RegisterPrefixParseFunctions()
     {
         return new Dictionary<TokenType, PrefixParseFunction>()
         {
-
         };
     }
 
@@ -57,57 +58,9 @@ public class Parser
             return true;
         }
 
+        errors.AddError(nextToken.tokenType + " ではなく、 " + type + " である必要があります。");
         return false;
     }
-
-    private IStatement ParseStatement()
-    {
-        switch (currentToken.tokenType)
-        {
-            case TokenType.LET:
-                return ParseLetStatement();
-            default:
-                return null;
-        }
-    }
-
-    private IExpression? ParseExpression(Precedence precedence)
-    {
-        prefixParseFunctions.TryGetValue(currentToken.tokenType, out var prefixFunc);
-        if (prefixFunc == null) return null;
-
-        var leftExpression = prefixFunc();
-
-
-
-        return leftExpression;
-    }
-
-    #region Statements
-    private LetStatement? ParseLetStatement()
-    {
-        // current = let
-
-        Identifier identifier;
-        IExpression expression = null;
-
-        // name
-        if (!ExpectPeek(TokenType.IDENTIFIER)) return null;
-        identifier = new Identifier(currentToken, currentToken.literal);
-
-        // =
-        if (!ExpectPeek(TokenType.EQ)) return null;
-
-        // expression
-        expression = ParseExpression(Precedence.LOWEST);
-
-        return new LetStatement(identifier, expression);
-    }
-    #endregion
-
-    #region Expressions
-
-    #endregion
 
     public Root Parse()
     {
@@ -126,5 +79,10 @@ public class Parser
         }
 
         return new Root(statements);
+    }
+
+    private IStatement ParseStatement()
+    {
+
     }
 }

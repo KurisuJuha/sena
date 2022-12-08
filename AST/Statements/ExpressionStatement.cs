@@ -8,4 +8,9 @@ public class ExpressionStatement : IStatement
     {
         this.expression = expression;
     }
+
+    public string ToCode()
+    {
+        return expression.ToCode() + ";";
+    }
 }
