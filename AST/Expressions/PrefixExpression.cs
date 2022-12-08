@@ -2,8 +2,8 @@
 
 public class PrefixExpression : IExpression
 {
-    public string op;
-    public IExpression rightExpression;
+    public readonly string op;
+    public readonly IExpression rightExpression;
 
     public PrefixExpression(string op, IExpression rightExpression)
     {
