@@ -57,6 +57,7 @@ public class Parser
         {
             [TokenType.IDENTIFIER] = ParseIdentifier,
             [TokenType.INTEGER_LITERAL] = ParseIntLiteral,
+            [TokenType.MINUS] = ParsePrefixExpression,
         };
     }
 
@@ -74,9 +75,6 @@ public class Parser
         nextToken = lexer.NextToken();
     }
 
-    /// <summary>
-    /// 現在のtokentypeが期待しているtokentypeならReadTokenする。
-    /// </summary>
     private bool ExpectCurrent(TokenType tokenType)
     {
         if (currentToken.tokenType == tokenType)
@@ -160,6 +158,18 @@ public class Parser
         IntLiteral intLiteral = new IntLiteral(currentToken.literal);
         ReadToken();
         return intLiteral;
+    }
+
+    private PrefixExpression? ParsePrefixExpression()
+    {
+        string op = currentToken.literal;
+
+        ReadToken();
+
+        IExpression? expression = ParseExpression(Precedence.PREFIX);
+        if (expression == null) return null;
+
+        return new PrefixExpression(op, expression);
     }
     #endregion
 }
