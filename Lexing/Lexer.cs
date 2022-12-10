@@ -45,6 +45,12 @@ public class Lexer
             case '-':
                 retToken = new Token("-", TokenType.MINUS);
                 break;
+            case '*':
+                retToken = new Token("*", TokenType.ASTERISK);
+                break;
+            case '/':
+                retToken = new Token("/", TokenType.SLASH);
+                break;
             default:
                 if (IsDigit(currentChar))
                 {

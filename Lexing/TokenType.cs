@@ -13,12 +13,11 @@ public enum TokenType
     INTEGER_LITERAL,
     // ;
     SEMICOLON,
-    // =
-    ASSIGN,
-    // -
-    MINUS,
-    // +
-    PLUS,
+    ASSIGN,         // =
+    MINUS,          // -
+    PLUS,           // +
+    ASTERISK,       // *
+    SLASH,          // /
 
     // keywords
     LET_KEYWORD,
