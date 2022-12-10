@@ -83,6 +83,8 @@ public class Parser
         {
             [TokenType.PLUS] = Precedence.SUM,
             [TokenType.MINUS] = Precedence.SUM,
+            [TokenType.ASTERISK] = Precedence.PRODUCT,
+            [TokenType.SLASH] = Precedence.PRODUCT,
         };
     }
 
@@ -102,6 +104,8 @@ public class Parser
         {
             [TokenType.PLUS] = ParseInfixExpression,
             [TokenType.MINUS] = ParseInfixExpression,
+            [TokenType.ASTERISK] = ParseInfixExpression,
+            [TokenType.SLASH] = ParseInfixExpression,
         };
     }
 
