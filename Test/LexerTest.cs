@@ -80,4 +80,29 @@ public class LexerTest
             Assert.Equal(token.literal, l_token.literal);
         }
     }
+
+    [Fact]
+    public void MinusPlusTest()
+    {
+        string code = @"+ - + + - -";
+        Lexer lexer = new Lexer(code);
+
+        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        {
+            (TokenType.PLUS, "+"),
+            (TokenType.MINUS, "-"),
+            (TokenType.PLUS, "+"),
+            (TokenType.PLUS, "+"),
+            (TokenType.MINUS, "-"),
+            (TokenType.MINUS, "-"),
+        };
+
+        foreach (var token in tokens)
+        {
+            Token l_token = lexer.NextToken();
+
+            Assert.Equal(token.type, l_token.tokenType);
+            Assert.Equal(token.literal, l_token.literal);
+        }
+    }
 }

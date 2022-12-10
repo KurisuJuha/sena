@@ -15,6 +15,10 @@ public enum TokenType
     SEMICOLON,
     // =
     ASSIGN,
+    // -
+    MINUS,
+    // +
+    PLUS,
 
     // keywords
     LET_KEYWORD,
