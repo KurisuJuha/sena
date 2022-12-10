@@ -39,4 +39,45 @@ public class LexerTest
             Assert.Equal(token.literal, l_token.literal);
         }
     }
+
+    [Fact]
+    public void AssignTest()
+    {
+        string code = @"= =";
+        Lexer lexer = new Lexer(code);
+
+        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        {
+            (TokenType.ASSIGN, "="),
+            (TokenType.ASSIGN, "="),
+        };
+
+        foreach (var token in tokens)
+        {
+            Token l_token = lexer.NextToken();
+
+            Assert.Equal(token.type, l_token.tokenType);
+            Assert.Equal(token.literal, l_token.literal);
+        }
+    }
+
+    [Fact]
+    public void LetKeywordTest()
+    {
+        string code = @"let";
+        Lexer lexer = new Lexer(code);
+
+        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        {
+            (TokenType.LET_KEYWORD, "let"),
+        };
+
+        foreach (var token in tokens)
+        {
+            Token l_token = lexer.NextToken();
+
+            Assert.Equal(token.type, l_token.tokenType);
+            Assert.Equal(token.literal, l_token.literal);
+        }
+    }
 }

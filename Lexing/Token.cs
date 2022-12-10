@@ -6,6 +6,7 @@ public struct Token
     public readonly TokenType tokenType;
     public static readonly Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType>
     {
+        ["let"] = TokenType.LET_KEYWORD,
     };
 
     public Token()

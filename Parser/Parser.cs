@@ -35,8 +35,10 @@ public class Parser
             {
                 statements.Add(statement);
             }
-
-            ReadToken();
+            else
+            {
+                ReadToken();
+            }
         }
 
         return new Root(statements);
@@ -46,33 +48,6 @@ public class Parser
     {
         currentToken = nextToken;
         nextToken = lexer.NextToken();
-    }
-
-    /// <summary>
-    /// 次のトークンが指定したTokenTypeと同じなら読み進める。違う場合はエラーとして出力する。
-    /// </summary>
-    private bool ExpectPeek(TokenType type)
-    {
-        if (nextToken.tokenType == type)
-        {
-            ReadToken();
-            return true;
-        }
-
-        errors.AddError(nextToken.tokenType + " ではなく、 " + type + " である必要があります。");
-        return false;
-    }
-
-    private bool CurrentExpectPeek(TokenType type)
-    {
-        if (currentToken.tokenType == type)
-        {
-            ReadToken();
-            return true;
-        }
-
-        errors.AddError(currentToken.tokenType + " ではなく、 " + type + " である必要があります。");
-        return false;
     }
 
     private IStatement? ParseStatement()

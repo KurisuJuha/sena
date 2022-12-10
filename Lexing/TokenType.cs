@@ -13,4 +13,9 @@ public enum TokenType
     INTEGER_LITERAL,
     // ;
     SEMICOLON,
+    // =
+    ASSIGN,
+
+    // keywords
+    LET_KEYWORD,
 }
