@@ -55,7 +55,8 @@ public class Parser
     {
         return new Dictionary<TokenType, PrefixParseFunction>()
         {
-            [TokenType.IDENTIFIER] = ParseIdentifier
+            [TokenType.IDENTIFIER] = ParseIdentifier,
+            [TokenType.INTEGER_LITERAL] = ParseIntLiteral,
         };
     }
 
@@ -151,6 +152,14 @@ public class Parser
         Identifier identifier = new Identifier(currentToken.literal);
         ReadToken();
         return identifier;
+    }
+
+    private IntLiteral? ParseIntLiteral()
+    {
+        if (currentToken.tokenType != TokenType.INTEGER_LITERAL) return null;
+        IntLiteral intLiteral = new IntLiteral(currentToken.literal);
+        ReadToken();
+        return intLiteral;
     }
     #endregion
 }
