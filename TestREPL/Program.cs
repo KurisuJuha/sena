@@ -1,4 +1,6 @@
-﻿using sena.Lexing;
+﻿using sena.AST;
+using sena.Lexing;
+using sena.Parsing;
 
 namespace sena.TestREPL;
 
@@ -18,6 +20,19 @@ internal class Program
             {
                 Console.WriteLine("literal : " + token.literal + " type : " + token.tokenType);
                 token = lexer.NextToken();
+            }
+
+            Lexer lexer2 = new Lexer(code);
+            Errors errors = new Errors();
+            Parser parser = new Parser(lexer, errors);
+            Root root = parser.Parse();
+
+            Console.WriteLine(root.ToCode());
+            foreach (var error in errors.errors)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(error);
+                Console.ResetColor();
             }
         }
     }
