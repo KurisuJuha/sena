@@ -185,7 +185,7 @@ public class Parser
         IExpression? value = ParseExpression(Precedence.LOWEST);
 
         // ;
-        ReadToken();
+        if (!ExpectCurrent(TokenType.SEMICOLON)) return null;
 
         if (name == null) return null;
         if (value == null) return null;
@@ -200,7 +200,7 @@ public class Parser
         if (expression == null) return null;
 
         // ;
-        ReadToken();
+        if(!ExpectCurrent(TokenType.SEMICOLON)) return null;
 
         return new ExpressionStatement(expression);
     }
