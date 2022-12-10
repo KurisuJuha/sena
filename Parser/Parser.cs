@@ -163,6 +163,7 @@ public class Parser
                 return leftExpression;
             }
 
+            if (leftExpression == null) return null;
             leftExpression = infix(leftExpression);
         }
 
