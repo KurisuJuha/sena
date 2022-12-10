@@ -3,7 +3,10 @@
 sena is a programming language.
 
 ```sena fibonacci.sn
-Console.WriteLine(fib(20));
+function void Main()
+{
+    Console.WriteLine(fib(20));
+}
 
 function int Fibonacci(int n)
 {
@@ -22,7 +25,10 @@ function int Fibonacci(int n)
 ```
 
 ```sena FizzBuzz.sn
-FizzBuzz(100);
+function void Main()
+{
+    FizzBuzz(100);
+}
 
 function int FizzBuzz(int n)
 {
