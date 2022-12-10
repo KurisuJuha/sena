@@ -18,6 +18,31 @@ public class Parser
     event Action<string> Log;
     readonly ReadOnlyDictionary<TokenType, PrefixParseFunction> PrefixParseFunctions;
     readonly ReadOnlyDictionary<TokenType, InfixParseFunction> InfixParseFunctions;
+    readonly ReadOnlyDictionary<TokenType, Precedence> Precedences;
+    Precedence currentPrecedence
+    {
+        get
+        {
+            if (Precedences.TryGetValue(currentToken.tokenType, out Precedence value))
+            {
+                return value;
+            }
+
+            return Precedence.LOWEST;
+        }
+    }
+    Precedence nextPrecedence
+    {
+        get
+        {
+            if (Precedences.TryGetValue(nextToken.tokenType, out Precedence value))
+            {
+                return value;
+            }
+
+            return Precedence.LOWEST;
+        }
+    }
 
     public Parser(Lexer lexer, Errors errors, Action<string>? Log = null)
     {
@@ -27,6 +52,7 @@ public class Parser
         if (Log != null) this.Log = Log;
         PrefixParseFunctions = RegisterPrefixParseFunctions().AsReadOnly();
         InfixParseFunctions = RegisterInfixParseFunctions().AsReadOnly();
+        Precedences = RegisterPrecedences().AsReadOnly();
 
         currentToken = lexer.NextToken();
         nextToken = lexer.NextToken();
@@ -49,6 +75,15 @@ public class Parser
         }
 
         return new Root(statements);
+    }
+
+    private Dictionary<TokenType, Precedence> RegisterPrecedences()
+    {
+        return new Dictionary<TokenType, Precedence>()
+        {
+            [TokenType.PLUS] = Precedence.SUM,
+            [TokenType.MINUS] = Precedence.SUM,
+        };
     }
 
     private Dictionary<TokenType, PrefixParseFunction> RegisterPrefixParseFunctions()
@@ -99,7 +134,6 @@ public class Parser
         }
     }
 
-    // TODO: 適当にIdentifier返してるのを直す
     private IExpression? ParseExpression(Precedence precedence)
     {
         // 前置
@@ -118,7 +152,6 @@ public class Parser
     }
 
     #region ParseStatements
-    // TODO: 適当にIdentifierで解析して返してるのを直す
     private LetStatement? ParseLetStatement()
     {
         // let
