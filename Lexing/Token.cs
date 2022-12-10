@@ -20,4 +20,9 @@ public struct Token
         this.literal = literal;
         this.tokenType = tokenType;
     }
+
+    public override string ToString()
+    {
+        return $"{{literal : {literal} tokenType : {tokenType}}}";
+    }
 }

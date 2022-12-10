@@ -16,11 +16,11 @@ public class ParserTest
     [Fact]
     public void LetStatementTest()
     {
-        string code = @"let piyo = poyo; let hoge = -123;";
+        string code = @"let piyo = poyo; let hoge = -123 + 4 + -100 + a;";
 
         Lexer lexer = new Lexer(code);
         Errors errors = new Errors();
-        Parser parser = new Parser(lexer, errors);
+        Parser parser = new Parser(lexer, errors, Console.WriteLine);
         Root root = parser.Parse();
 
         errors.WriteLine(Console.WriteLine);

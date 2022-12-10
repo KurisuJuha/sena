@@ -100,7 +100,8 @@ public class Parser
     {
         return new Dictionary<TokenType, InfixParseFunction>()
         {
-
+            [TokenType.PLUS] = ParseInfixExpression,
+            [TokenType.MINUS] = ParseInfixExpression,
         };
     }
 
@@ -147,6 +148,16 @@ public class Parser
         IExpression? leftExpression = prefix();
 
         // 中置
+        while (precedence < currentPrecedence)
+        {
+            InfixParseFunctions.TryGetValue(currentToken.tokenType, out var infix);
+            if (infix == null)
+            {
+                return leftExpression;
+            }
+
+            leftExpression = infix(leftExpression);
+        }
 
         return leftExpression;
     }
@@ -203,6 +214,17 @@ public class Parser
         if (expression == null) return null;
 
         return new PrefixExpression(op, expression);
+    }
+
+    private InfixExpression? ParseInfixExpression(IExpression leftExpression)
+    {
+        string op = currentToken.literal;
+        Precedence precedence = currentPrecedence;
+        ReadToken();
+        IExpression? rightExpression = ParseExpression(precedence);
+        if (rightExpression == null) return null;
+
+        return new InfixExpression(op, rightExpression, leftExpression);
     }
     #endregion
 }

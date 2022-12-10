@@ -15,6 +15,6 @@ public class InfixExpression : IExpression
 
     public string ToCode()
     {
-        return $"( {rightExpression.ToCode()} {op} {leftExpression.ToCode()} )";
+        return $"( {leftExpression.ToCode()} {op} {rightExpression.ToCode()} )";
     }
 }
