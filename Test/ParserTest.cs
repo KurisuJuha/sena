@@ -30,5 +30,6 @@ public class ParserTest
         Assert.NotNull(letStatement);
         LetStatement? letStatement2 = root.statements[1] as LetStatement;
         Assert.NotNull(letStatement2);
+        Console.WriteLine(root.ToCode());
     }
 }

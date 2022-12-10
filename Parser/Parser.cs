@@ -2,6 +2,7 @@
 using sena.AST.Expressions;
 using sena.AST.Statements;
 using sena.Lexing;
+using System.Collections.ObjectModel;
 
 namespace sena.Parsing;
 
@@ -15,6 +16,8 @@ public class Parser
     readonly Lexer lexer;
     readonly Errors errors;
     event Action<string> Log;
+    readonly ReadOnlyDictionary<TokenType, PrefixParseFunction> PrefixParseFunctions;
+    readonly ReadOnlyDictionary<TokenType, InfixParseFunction> InfixParseFunctions;
 
     public Parser(Lexer lexer, Errors errors, Action<string>? Log = null)
     {
@@ -22,6 +25,8 @@ public class Parser
         this.errors = errors;
         this.Log = Console.WriteLine;
         if (Log != null) this.Log = Log;
+        PrefixParseFunctions = RegisterPrefixParseFunctions().AsReadOnly();
+        InfixParseFunctions = RegisterInfixParseFunctions().AsReadOnly();
 
         currentToken = lexer.NextToken();
         nextToken = lexer.NextToken();
@@ -46,28 +51,26 @@ public class Parser
         return new Root(statements);
     }
 
+    private Dictionary<TokenType, PrefixParseFunction> RegisterPrefixParseFunctions()
+    {
+        return new Dictionary<TokenType, PrefixParseFunction>()
+        {
+            [TokenType.IDENTIFIER] = ParseIdentifier
+        };
+    }
+
+    private Dictionary<TokenType, InfixParseFunction> RegisterInfixParseFunctions()
+    {
+        return new Dictionary<TokenType, InfixParseFunction>()
+        {
+
+        };
+    }
+
     private void ReadToken()
     {
         currentToken = nextToken;
         nextToken = lexer.NextToken();
-    }
-
-    private IStatement? ParseStatement()
-    {
-        switch (currentToken.tokenType)
-        {
-            case TokenType.LET_KEYWORD:
-                return ParseLetStatement();
-            default:
-                errors.AddError(currentToken.tokenType + " から始まる文は存在しません。");
-                return null;
-        }
-    }
-
-    private IExpression? ParseExpression()
-    {
-        ReadToken();
-        return new Identifier("test");
     }
 
     /// <summary>
@@ -85,7 +88,38 @@ public class Parser
         return false;
     }
 
+    private IStatement? ParseStatement()
+    {
+        switch (currentToken.tokenType)
+        {
+            case TokenType.LET_KEYWORD:
+                return ParseLetStatement();
+            default:
+                errors.AddError(currentToken.tokenType + " から始まる文は存在しません。");
+                return null;
+        }
+    }
+
+    // TODO: 適当にIdentifier返してるのを直す
+    private IExpression? ParseExpression(Precedence precedence)
+    {
+        // 前置
+        PrefixParseFunctions.TryGetValue(currentToken.tokenType, out var prefix);
+        if (prefix == null)
+        {
+            errors.AddError($"{currentToken.tokenType} から始まる PrefixParseFunction はありません。");
+            return null;
+        }
+
+        IExpression? leftExpression = prefix();
+
+        // 中置
+
+        return leftExpression;
+    }
+
     #region ParseStatements
+    // TODO: 適当にIdentifierで解析して返してるのを直す
     private LetStatement? ParseLetStatement()
     {
         // let
@@ -98,7 +132,7 @@ public class Parser
         if (!ExpectCurrent(TokenType.ASSIGN)) return null;
 
         // value
-        IExpression? value = ParseExpression();
+        IExpression? value = ParseExpression(Precedence.LOWEST);
 
         // ;
         ReadToken();
