@@ -12,28 +12,13 @@ internal class Program
         {
             Console.Write(">>>");
             string code = Console.ReadLine() ?? "";
-            Console.WriteLine(code);
             Lexer lexer = new Lexer(code);
-
-            Token token = lexer.NextToken();
-            while (token.tokenType != TokenType.EOF)
-            {
-                Console.WriteLine("literal : " + token.literal + " type : " + token.tokenType);
-                token = lexer.NextToken();
-            }
-
-            Lexer lexer2 = new Lexer(code);
             Errors errors = new Errors();
-            Parser parser = new Parser(lexer, errors);
+            Parser parser = new Parser(lexer, errors, Console.WriteLine);
             Root root = parser.Parse();
 
+            errors.WriteLine(Console.WriteLine);
             Console.WriteLine(root.ToCode());
-            foreach (var error in errors.errors)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(error);
-                Console.ResetColor();
-            }
         }
     }
 }
