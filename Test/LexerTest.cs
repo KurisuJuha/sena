@@ -9,4 +9,34 @@ public class LexerTest
     {
         Console = testOutputHelper;
     }
+
+    [Fact]
+    public void SemicolonTest()
+    {
+        string code = @"; ;;; ;;;;;; ;";
+        Lexer lexer = new Lexer(code);
+
+        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        {
+            (TokenType.SEMICOLON, ";"),
+            (TokenType.SEMICOLON, ";"),
+            (TokenType.SEMICOLON, ";"),
+            (TokenType.SEMICOLON, ";"),
+            (TokenType.SEMICOLON, ";"),
+            (TokenType.SEMICOLON, ";"),
+            (TokenType.SEMICOLON, ";"),
+            (TokenType.SEMICOLON, ";"),
+            (TokenType.SEMICOLON, ";"),
+            (TokenType.SEMICOLON, ";"),
+            (TokenType.SEMICOLON, ";"),
+        };
+
+        foreach (var token in tokens)
+        {
+            Token l_token = lexer.NextToken();
+
+            Assert.Equal(token.type, l_token.tokenType);
+            Assert.Equal(token.literal, l_token.literal);
+        }
+    }
 }
