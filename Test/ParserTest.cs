@@ -51,4 +51,21 @@ public class ParserTest
 
         Console.WriteLine(root.ToCode());
     }
+
+    [Fact]
+    public void ExpressionStatementTest()
+    {
+        string code = @"hoge; foo;";
+
+        Lexer lexer = new Lexer(code);
+        Errors errors = new Errors();
+        Parser parser = new Parser(lexer, errors, Console.WriteLine);
+        Root root = parser.Parse();
+
+        errors.WriteLine(Console.WriteLine);
+
+        Assert.Equal(0, errors.errors.Count);
+
+        Console.WriteLine(root.ToCode());
+    }
 }

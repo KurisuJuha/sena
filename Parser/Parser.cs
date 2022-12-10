@@ -134,6 +134,9 @@ public class Parser
             case TokenType.LET_KEYWORD:
                 return ParseLetStatement();
             default:
+                ExpressionStatement? expressionStatement = ParseExpressionStatement();
+                if (expressionStatement != null) return expressionStatement;  
+
                 errors.AddError(currentToken.tokenType + " から始まる文は存在しません。");
                 return null;
         }
@@ -188,6 +191,18 @@ public class Parser
         if (value == null) return null;
 
         return new LetStatement(name, value);
+    }
+
+    private ExpressionStatement? ParseExpressionStatement()
+    {
+        // 式
+        IExpression? expression = ParseExpression(Precedence.LOWEST);
+        if (expression == null) return null;
+
+        // ;
+        ReadToken();
+
+        return new ExpressionStatement(expression);
     }
     #endregion
 
