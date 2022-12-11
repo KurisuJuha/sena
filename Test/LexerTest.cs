@@ -128,4 +128,28 @@ public class LexerTest
             Assert.Equal(token.literal, l_token.literal);
         }
     }
+
+    [Fact]
+    public void TrueFalseTest()
+    {
+        string code = @"true false true true false";
+        Lexer lexer = new Lexer(code);
+
+        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        {
+            (TokenType.TRUE, "true"),
+            (TokenType.FALSE, "false"),
+            (TokenType.TRUE, "true"),
+            (TokenType.TRUE, "true"),
+            (TokenType.FALSE, "false"),
+        };
+
+        foreach (var token in tokens)
+        {
+            Token l_token = lexer.NextToken();
+
+            Assert.Equal(token.type, l_token.tokenType);
+            Assert.Equal(token.literal, l_token.literal);
+        }
+    }
 }

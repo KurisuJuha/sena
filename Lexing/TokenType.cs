@@ -7,21 +7,20 @@ public enum TokenType
     // 終端
     EOF,
 
-    // 識別子
-    IDENTIFIER,
-    // 整数
-    INTEGER_LITERAL,
-    // (
-    LPAREN,
-    // )
-    RPAREN,
-    // ;
-    SEMICOLON,
-    ASSIGN,         // =
-    MINUS,          // -
-    PLUS,           // +
-    ASTERISK,       // *
-    SLASH,          // /
+    IDENTIFIER,         // 識別子
+    INTEGER_LITERAL,    // 整数
+
+    LPAREN,             // (
+    RPAREN,             // )
+    SEMICOLON,          // ;
+    ASSIGN,             // =
+    MINUS,              // -
+    PLUS,               // +
+    ASTERISK,           // *
+    SLASH,              // /
+
+    TRUE,               // true
+    FALSE,              // false
 
     // keywords
     LET_KEYWORD,
