@@ -11,6 +11,10 @@ public enum TokenType
     IDENTIFIER,
     // 整数
     INTEGER_LITERAL,
+    // (
+    LPAREN,
+    // )
+    RPAREN,
     // ;
     SEMICOLON,
     ASSIGN,         // =

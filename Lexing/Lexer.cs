@@ -51,6 +51,12 @@ public class Lexer
             case '/':
                 retToken = new Token("/", TokenType.SLASH);
                 break;
+            case '(':
+                retToken = new Token("(", TokenType.LPAREN);
+                break;
+            case ')':
+                retToken = new Token(")", TokenType.RPAREN);
+                break;
             default:
                 if (IsDigit(currentChar))
                 {

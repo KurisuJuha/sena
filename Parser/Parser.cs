@@ -95,6 +95,7 @@ public class Parser
             [TokenType.IDENTIFIER] = ParseIdentifier,
             [TokenType.INTEGER_LITERAL] = ParseIntLiteral,
             [TokenType.MINUS] = ParsePrefixExpression,
+            [TokenType.LPAREN] = ParseGroupedExpression,
         };
     }
 
@@ -245,6 +246,17 @@ public class Parser
         if (rightExpression == null) return null;
 
         return new InfixExpression(op, rightExpression, leftExpression);
+    }
+
+    private IExpression? ParseGroupedExpression()
+    {
+        if (!ExpectCurrent(TokenType.LPAREN)) return null;
+
+        IExpression? expression = ParseExpression(Precedence.LOWEST);
+
+        if (!ExpectCurrent(TokenType.RPAREN)) return null;
+
+        return expression;
     }
     #endregion
 }

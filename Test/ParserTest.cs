@@ -38,7 +38,7 @@ public class ParserTest
     [Fact]
     public void PrefixInfixTest()
     {
-        string code = @"let a = 100 + 100 * -10 / 2;";
+        string code = @"let a = (100 + 100 )* -10 / 2;";
 
         Lexer lexer = new Lexer(code);
         Errors errors = new Errors();
