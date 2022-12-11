@@ -1,5 +1,5 @@
-﻿using sena.Parsing;
-using sena.SemanticsAnalysis;
+﻿using sena.Analysis;
+using sena.Parsing;
 using Xunit.Abstractions;
 
 namespace sena.Test;
@@ -20,7 +20,7 @@ public class AnalyzerTest
         Lexer lexer = new Lexer(code);
         Errors errors = new Errors();
         Parser parser = new Parser(lexer, errors, Console.WriteLine);
-        SemanticsAnalyzer semanticsAnalyzer = new SemanticsAnalyzer(parser.Parse());
+        Analyzer semanticsAnalyzer = new Analyzer(parser.Parse());
 
         Assert.True(semanticsAnalyzer.Analyze());
     }

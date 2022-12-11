@@ -25,6 +25,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Lexing\Lexing.csproj" />
     <ProjectReference Include="..\Parser\Parsing.csproj" />
-    <ProjectReference Include="..\SemanticAnalysis\SemanticsAnalysis.csproj" />
+    <ProjectReference Include="..\SemanticAnalysis\Analyzing.csproj" />
   </ItemGroup>
 </Project>
