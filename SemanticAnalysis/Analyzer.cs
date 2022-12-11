@@ -8,10 +8,12 @@ namespace sena.Analysis;
 public class Analyzer
 {
     readonly Root root;
+    public List<string> variableNames;
 
     public Analyzer(Root root)
     {
         this.root = root;
+        this.variableNames = new List<string>();
     }
 
     public bool Analyze()
@@ -44,7 +46,11 @@ public class Analyzer
     #region Statements
     private bool AnalyzeLetStatement(LetStatement letStatement)
     {
+        // 変数の中身について
         if (!AnalyzeExpression(letStatement.value)) return false;
+
+        // 変数の名前について
+        if (variableNames.Contains(letStatement.identifier.name)) return false;
 
         return true;
     }
