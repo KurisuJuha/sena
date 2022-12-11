@@ -40,6 +40,8 @@ public class Analyzer
         {
             case IntLiteral intLiteral:
                 return AnalyzeIntLiteralExpression(intLiteral);
+            case Identifier identifier:
+                return AnalyzeIdentifierExpression(identifier);
             default:
                 return false;
         }
@@ -54,6 +56,7 @@ public class Analyzer
         // 変数の名前について
         if (variableNames.Contains(letStatement.identifier.name)) return false;
 
+        variableNames.Add(letStatement.identifier.name);
         return true;
     }
 
@@ -69,6 +72,14 @@ public class Analyzer
     #region Expressions
     private bool AnalyzeIntLiteralExpression(IntLiteral intLiteral)
     {
+        return true;
+    }
+
+    private bool AnalyzeIdentifierExpression(Identifier identifier)
+    {
+        // このidentifierの名前が存在するかどうか
+        if (!variableNames.Contains(identifier.name)) return false;
+
         return true;
     }
     #endregion
