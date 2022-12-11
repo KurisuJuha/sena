@@ -74,7 +74,7 @@ public class Analyzer
     #region Expressions
     private ExpressionData? AnalyzeIntLiteralExpression(IntLiteral intLiteral)
     {
-        return new ExpressionData("sena.int");
+        return new ExpressionData("sena.Int");
     }
 
     private ExpressionData? AnalyzeIdentifierExpression(Identifier identifier)
