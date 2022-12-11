@@ -1,4 +1,5 @@
-﻿using sena.AST;
+﻿using sena.Analyzing;
+using sena.AST;
 using sena.AST.Expressions;
 using sena.AST.Statements;
 using System.Collections.ObjectModel;
@@ -8,12 +9,12 @@ namespace sena.Analysis;
 public class Analyzer
 {
     readonly Root root;
-    public List<string> variableNames;
+    public Dictionary<string, ExpressionData> variableNames;
 
     public Analyzer(Root root)
     {
         this.root = root;
-        this.variableNames = new List<string>();
+        variableNames = new Dictionary<string, ExpressionData>();
     }
 
     public bool Analyze()
@@ -34,7 +35,7 @@ public class Analyzer
         }
     }
 
-    private bool AnalyzeExpression(IExpression expression)
+    private ExpressionData? AnalyzeExpression(IExpression expression)
     {
         switch (expression)
         {
@@ -43,7 +44,7 @@ public class Analyzer
             case Identifier identifier:
                 return AnalyzeIdentifierExpression(identifier);
             default:
-                return false;
+                return null;
         }
     }
 
@@ -51,36 +52,37 @@ public class Analyzer
     private bool AnalyzeLetStatement(LetStatement letStatement)
     {
         // 変数の中身について
-        if (!AnalyzeExpression(letStatement.value)) return false;
+        ExpressionData? expressionData = AnalyzeExpression(letStatement.value);
+        if (expressionData is null) return false;
 
         // 変数の名前について
-        if (variableNames.Contains(letStatement.identifier.name)) return false;
+        if (variableNames.Keys.Contains(letStatement.identifier.name)) return false;
 
-        variableNames.Add(letStatement.identifier.name);
+        variableNames[letStatement.identifier.name] = expressionData;
         return true;
     }
 
     private bool AnalyzeExpressionStatement(ExpressionStatement expressionStatement)
     {
         // 中身の解析
-        if (!AnalyzeExpression(expressionStatement.expression)) return false;
+        if (AnalyzeExpression(expressionStatement.expression) is null) return false;
 
         return true;
     }
     #endregion
 
     #region Expressions
-    private bool AnalyzeIntLiteralExpression(IntLiteral intLiteral)
+    private ExpressionData? AnalyzeIntLiteralExpression(IntLiteral intLiteral)
     {
-        return true;
+        return new ExpressionData("sena.int");
     }
 
-    private bool AnalyzeIdentifierExpression(Identifier identifier)
+    private ExpressionData? AnalyzeIdentifierExpression(Identifier identifier)
     {
         // このidentifierの名前が存在するかどうか
-        if (!variableNames.Contains(identifier.name)) return false;
+        if (!variableNames.Keys.Contains(identifier.name)) return null;
 
-        return true;
+        return new ExpressionData(variableNames[identifier.name].typeName);
     }
     #endregion
 }
