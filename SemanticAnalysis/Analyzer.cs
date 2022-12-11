@@ -1,4 +1,5 @@
 ﻿using sena.AST;
+using sena.AST.Expressions;
 using sena.AST.Statements;
 using System.Collections.ObjectModel;
 
@@ -29,8 +30,30 @@ public class Analyzer
         }
     }
 
+    private bool AnalyzeExpression(IExpression expression)
+    {
+        switch (expression)
+        {
+            case IntLiteral intLiteral:
+                return AnalyzeIntLiteralExpression(intLiteral);
+            default:
+                return false;
+        }
+    }
+
+    #region Statements
     private bool AnalyzeLetStatement(LetStatement letStatement)
+    {
+        if (!AnalyzeExpression(letStatement.value)) return false;
+
+        return true;
+    }
+    #endregion
+
+    #region Expressions
+    private bool AnalyzeIntLiteralExpression(IntLiteral intLiteral)
     {
         return true;
     }
+    #endregion
 }
