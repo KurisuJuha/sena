@@ -27,6 +27,8 @@ public class Analyzer
         {
             case LetStatement letStatement:
                 return AnalyzeLetStatement(letStatement);
+            case ExpressionStatement expressionStatement:
+                return AnalyzeExpressionStatement(expressionStatement);
             default:
                 return false;
         }
@@ -51,6 +53,14 @@ public class Analyzer
 
         // 変数の名前について
         if (variableNames.Contains(letStatement.identifier.name)) return false;
+
+        return true;
+    }
+
+    private bool AnalyzeExpressionStatement(ExpressionStatement expressionStatement)
+    {
+        // 中身の解析
+        if (!AnalyzeExpression(expressionStatement.expression)) return false;
 
         return true;
     }

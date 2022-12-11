@@ -24,4 +24,17 @@ public class AnalyzerTest
 
         Assert.True(semanticsAnalyzer.Analyze());
     }
+
+    [Fact]
+    public void AnalyzeExpressionStatementTest()
+    {
+        string code = $"19;23;444; 505;";
+
+        Lexer lexer = new Lexer(code);
+        Errors errors = new Errors();
+        Parser parser = new Parser(lexer, errors, Console.WriteLine);
+        Analyzer semanticsAnalyzer = new Analyzer(parser.Parse());
+
+        Assert.True(semanticsAnalyzer.Analyze());
+    }
 }
