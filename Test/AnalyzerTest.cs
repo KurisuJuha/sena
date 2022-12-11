@@ -37,4 +37,43 @@ public class AnalyzerTest
 
         Assert.True(semanticsAnalyzer.Analyze());
     }
+
+    [Fact]
+    public void AnalyzeIdentifierExpressionTest()
+    {
+        string code = $"let b = 10; let fafweafwa = 33; let hoge = 444444; let HogeHoge =44; b; fafweafwa; hoge; HogeHoge;";
+
+        Lexer lexer = new Lexer(code);
+        Errors errors = new Errors();
+        Parser parser = new Parser(lexer, errors, Console.WriteLine);
+        Analyzer semanticsAnalyzer = new Analyzer(parser.Parse());
+
+        Assert.True(semanticsAnalyzer.Analyze());
+    }
+
+    [Fact]
+    public void AnalyzeInfixExpressionTest()
+    {
+        string code = $"333443 + 443434;";
+
+        Lexer lexer = new Lexer(code);
+        Errors errors = new Errors();
+        Parser parser = new Parser(lexer, errors, Console.WriteLine);
+        Analyzer semanticsAnalyzer = new Analyzer(parser.Parse());
+
+        Assert.True(semanticsAnalyzer.Analyze());
+    }
+
+    [Fact]
+    public void AnalyzePrefixExpressionTest()
+    {
+        string code = $"-12;";
+
+        Lexer lexer = new Lexer(code);
+        Errors errors = new Errors();
+        Parser parser = new Parser(lexer, errors, Console.WriteLine);
+        Analyzer semanticsAnalyzer = new Analyzer(parser.Parse());
+
+        Assert.True(semanticsAnalyzer.Analyze());
+    }
 }
