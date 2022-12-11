@@ -41,10 +41,12 @@ public class Analyzer
         {
             case IntLiteral intLiteral:
                 return AnalyzeIntLiteralExpression(intLiteral);
-            case Identifier identifier:
-                return AnalyzeIdentifierExpression(identifier);
             case BoolLiteral boolLiteral:
                 return AnalyzeBoolLiteralExpression(boolLiteral);
+            case Identifier identifier:
+                return AnalyzeIdentifierExpression(identifier);
+            case InfixExpression infixExpression:
+                return AnalyzeInfixExpression(infixExpression);
             default:
                 return null;
         }
@@ -90,6 +92,23 @@ public class Analyzer
     private ExpressionData? AnalyzeBoolLiteralExpression(BoolLiteral boolLiteral)
     {
         return new ExpressionData("sena.Boolean");
+    }
+
+    private ExpressionData? AnalyzeInfixExpression(InfixExpression infixExpression)
+    {
+        ExpressionData? left = AnalyzeExpression(infixExpression.leftExpression);
+        ExpressionData? right = AnalyzeExpression(infixExpression.rightExpression);
+
+        // 左がnullか
+        if (left == null) return null;
+
+        // 右がnullか
+        if (right == null) return null;
+
+        // 右と左が同じ型か
+        if (right.typeName != left.typeName) return null;
+
+        return new ExpressionData(left.typeName);
     }
     #endregion
 }

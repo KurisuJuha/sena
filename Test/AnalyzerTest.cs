@@ -69,6 +69,12 @@ ffafwsfa;";
 44343 + 34444";
 
         Assert.True(GetAnalyzer(code).Analyze());
+
+        string code2 = @"
+333443 + true;
+44343 + false";
+
+        Assert.False(GetAnalyzer(code2).Analyze());
     }
 
     [Fact]
