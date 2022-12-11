@@ -43,12 +43,22 @@ public class Analyzer
                 return AnalyzeIntLiteralExpression(intLiteral);
             case Identifier identifier:
                 return AnalyzeIdentifierExpression(identifier);
+            case BoolLiteral boolLiteral:
+                return AnalyzeBoolLiteralExpression(boolLiteral);
             default:
                 return null;
         }
     }
 
     #region Statements
+    private bool AnalyzeExpressionStatement(ExpressionStatement expressionStatement)
+    {
+        // 中身の解析
+        if (AnalyzeExpression(expressionStatement.expression) is null) return false;
+
+        return true;
+    }
+
     private bool AnalyzeLetStatement(LetStatement letStatement)
     {
         // 変数の中身について
@@ -61,20 +71,12 @@ public class Analyzer
         variableNames[letStatement.identifier.name] = expressionData;
         return true;
     }
-
-    private bool AnalyzeExpressionStatement(ExpressionStatement expressionStatement)
-    {
-        // 中身の解析
-        if (AnalyzeExpression(expressionStatement.expression) is null) return false;
-
-        return true;
-    }
     #endregion
 
     #region Expressions
     private ExpressionData? AnalyzeIntLiteralExpression(IntLiteral intLiteral)
     {
-        return new ExpressionData("sena.Int");
+        return new ExpressionData("sena.Integer");
     }
 
     private ExpressionData? AnalyzeIdentifierExpression(Identifier identifier)
@@ -83,6 +85,11 @@ public class Analyzer
         if (!variableNames.Keys.Contains(identifier.name)) return null;
 
         return new ExpressionData(variableNames[identifier.name].typeName);
+    }
+
+    private ExpressionData? AnalyzeBoolLiteralExpression(BoolLiteral boolLiteral)
+    {
+        return new ExpressionData("sena.Boolean");
     }
     #endregion
 }

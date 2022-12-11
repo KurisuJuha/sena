@@ -32,7 +32,9 @@ let b = 2;";
 19;
 23;
 444; 
-505;";
+505;
+true;
+false;";
         Assert.True(GetAnalyzer(code).Analyze());
     }
 
