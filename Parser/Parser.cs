@@ -96,6 +96,8 @@ public class Parser
             [TokenType.INTEGER_LITERAL] = ParseIntLiteral,
             [TokenType.MINUS] = ParsePrefixExpression,
             [TokenType.LPAREN] = ParseGroupedExpression,
+            [TokenType.TRUE] = ParseBoolLiteral,
+            [TokenType.FALSE] = ParseBoolLiteral,
         };
     }
 
@@ -223,6 +225,14 @@ public class Parser
         IntLiteral intLiteral = new IntLiteral(currentToken.literal);
         ReadToken();
         return intLiteral;
+    }
+
+    private BoolLiteral? ParseBoolLiteral()
+    {
+        BoolLiteral boolLiteral = new BoolLiteral(currentToken.tokenType == TokenType.TRUE);
+        ReadToken();
+
+        return boolLiteral;
     }
 
     private PrefixExpression? ParsePrefixExpression()

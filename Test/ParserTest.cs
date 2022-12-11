@@ -1,4 +1,5 @@
 ﻿using sena.AST;
+using sena.AST.Expressions;
 using sena.AST.Statements;
 using sena.Parsing;
 using Xunit.Abstractions;
@@ -67,5 +68,25 @@ public class ParserTest
         Assert.Equal(0, errors.errors.Count);
 
         Console.WriteLine(root.ToCode());
+    }
+
+    [Fact]
+    public void BoolLiteralTest()
+    {
+        string code = @"
+true;
+false;
+";
+        Lexer lexer = new Lexer(code);
+        Errors errors = new Errors();
+        Parser parser = new Parser(lexer, errors);
+        Root root = parser.Parse();
+
+        Console.WriteLine(root.ToCode());
+        BoolLiteral? boolLiteral1 = (root.statements[0] as ExpressionStatement)?.expression as BoolLiteral;
+        BoolLiteral? boolLiteral2 = (root.statements[1] as ExpressionStatement)?.expression as BoolLiteral;
+
+        Assert.NotNull(boolLiteral1);
+        Assert.NotNull(boolLiteral2);
     }
 }
