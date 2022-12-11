@@ -47,6 +47,8 @@ public class Analyzer
                 return AnalyzeIdentifierExpression(identifier);
             case InfixExpression infixExpression:
                 return AnalyzeInfixExpression(infixExpression);
+            case PrefixExpression prefixExpression:
+                return AnalyzePrefixExpression(prefixExpression);
             default:
                 return null;
         }
@@ -109,6 +111,15 @@ public class Analyzer
         if (right.typeName != left.typeName) return null;
 
         return new ExpressionData(left.typeName);
+    }
+
+    private ExpressionData? AnalyzePrefixExpression(PrefixExpression prefixExpression)
+    {
+        ExpressionData? expressionData = AnalyzeExpression(prefixExpression.expression);
+
+        if (expressionData == null) return null;
+
+        return expressionData;
     }
     #endregion
 }
