@@ -20,4 +20,6 @@ sena <filename>
 
 ## リンク
 
-[構文](/Documents/STATEMENTS.md)
+[構文](STATEMENTS.md)
+
+[式](EXPRESSIONS.md)
