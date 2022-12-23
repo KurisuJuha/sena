@@ -41,3 +41,29 @@ let <識別子>;
 ```sena
 let <識別子> = <式>;
 ```
+
+## 関数定義
+
+```sena
+<func, purefunc> <void, 型識別子> <識別子>(<型識別子> <識別子>)
+    <処理>
+}
+```
+
+## return
+
+```sena
+return <式>;
+```
+
+## break
+
+```sena
+break;
+```
+
+## continue
+
+```sena
+continue;
+```
