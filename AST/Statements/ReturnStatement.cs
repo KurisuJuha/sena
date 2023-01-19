@@ -11,6 +11,6 @@ public class ReturnStatement : IStatement
 
     public string ToCode()
     {
-        return $"return {expression.ToCode()}";
+        return $"return {expression.ToCode()};";
     }
 }

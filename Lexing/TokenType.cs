@@ -24,4 +24,5 @@ public enum TokenType
 
     // keywords
     LET_KEYWORD,
+    RETURN_KEYWORD,
 }

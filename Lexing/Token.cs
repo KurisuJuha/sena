@@ -9,6 +9,7 @@ public struct Token
         ["let"] = TokenType.LET_KEYWORD,
         ["true"] = TokenType.TRUE,
         ["false"] = TokenType.FALSE,
+        ["return"] = TokenType.RETURN_KEYWORD,
     };
 
     public Token()

@@ -37,6 +37,25 @@ public class ParserTest
     }
 
     [Fact]
+    public void ReturnStatementTest()
+    {
+        string code = @"return 123;";
+
+        Lexer lexer = new Lexer(code);
+        Errors errors = new Errors();
+        Parser parser = new Parser(lexer, errors, Console.WriteLine);
+        Root root = parser.Parse();
+
+        errors.WriteLine(Console.WriteLine);
+
+        Assert.Equal(0, errors.errors.Count);
+
+        Assert.Equal("return 123;", root.ToCode());
+
+        Console.WriteLine(root.ToCode());
+    }
+
+    [Fact]
     public void PrefixInfixTest()
     {
         string code = @"let a = (100 + 100 )* -10 / 2;";

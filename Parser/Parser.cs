@@ -136,9 +136,11 @@ public class Parser
         {
             case TokenType.LET_KEYWORD:
                 return ParseLetStatement();
+            case TokenType.RETURN_KEYWORD:
+                return ParseReturnStatement();
             default:
                 ExpressionStatement? expressionStatement = ParseExpressionStatement();
-                if (expressionStatement != null) return expressionStatement;  
+                if (expressionStatement != null) return expressionStatement;
 
                 errors.AddError(currentToken.tokenType + " から始まる文は存在しません。");
                 return null;
@@ -204,9 +206,24 @@ public class Parser
         if (expression == null) return null;
 
         // ;
-        if(!ExpectCurrent(TokenType.SEMICOLON)) return null;
+        if (!ExpectCurrent(TokenType.SEMICOLON)) return null;
 
         return new ExpressionStatement(expression);
+    }
+
+    private ReturnStatement? ParseReturnStatement()
+    {
+        // return
+        if (!ExpectCurrent(TokenType.RETURN_KEYWORD)) return null;
+
+        // 式
+        IExpression? expression = ParseExpression(Precedence.LOWEST);
+        if (expression == null) return null;
+
+        // ;
+        if (!ExpectCurrent(TokenType.SEMICOLON)) return null;
+
+        return new ReturnStatement(expression);
     }
     #endregion
 
