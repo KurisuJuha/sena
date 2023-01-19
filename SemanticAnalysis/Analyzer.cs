@@ -1,10 +1,8 @@
-﻿using sena.Analyzing;
-using sena.AST;
+﻿using sena.AST;
 using sena.AST.Expressions;
 using sena.AST.Statements;
-using System.Collections.ObjectModel;
 
-namespace sena.Analysis;
+namespace sena.Analyzing;
 
 public class Analyzer
 {
