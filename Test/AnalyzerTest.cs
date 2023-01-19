@@ -1,4 +1,4 @@
-﻿using sena.Analysis;
+﻿using sena.Analyzing;
 using sena.Parsing;
 using Xunit.Abstractions;
 
@@ -91,7 +91,7 @@ ffafwsfa;";
     {
         Lexer lexer = new Lexer(code);
         Errors errors = new Errors();
-        Parser parser = new Parser(lexer,errors, Console.WriteLine);
+        Parser parser = new Parser(lexer, errors, Console.WriteLine);
         Analyzer analyzer = new Analyzer(parser.Parse());
         return analyzer;
     }
