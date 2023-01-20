@@ -27,6 +27,9 @@ public class AST2Wasm
 
     private IWasmNode CompileRoot(Root root)
     {
-        return new ModuleNode(root.statements.Select(s => CompileNode(s)).ToArray());
+        List<IWasmNode> nodes = new List<IWasmNode>();
+        nodes.Add(new MemoryNode(1));
+        nodes.AddRange(root.statements.Select(s => CompileNode(s)));
+        return new ModuleNode(nodes.ToArray());
     }
 }
