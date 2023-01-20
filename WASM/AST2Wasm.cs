@@ -28,10 +28,10 @@ public class AST2Wasm
     private string CompileRoot(Root root)
     {
         StringBuilder builder = new StringBuilder();
-        builder.AppendLine("(module");
-        builder.AppendLine("(memory 1)");
-        builder.AppendLine("(export \"memory\" (memory 0))");
-        builder.AppendLine(")");
+        builder.Append("(module");
+        builder.Append("(memory 1)");
+        builder.Append("(export \"memory\" (memory 0))");
+        builder.Append(")");
 
         return builder.ToString();
     }

@@ -26,5 +26,6 @@
     <ProjectReference Include="..\Lexer\Lexing.csproj" />
     <ProjectReference Include="..\Parser\Parsing.csproj" />
     <ProjectReference Include="..\Analyzer\Analyzing.csproj" />
+    <ProjectReference Include="..\WASM\WASM.csproj" />
   </ItemGroup>
 </Project>
