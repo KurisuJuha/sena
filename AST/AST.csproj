@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lexing\Lexing.csproj" />
+    <ProjectReference Include="..\Lexer\Lexing.csproj" />
   </ItemGroup>
 
 </Project>
