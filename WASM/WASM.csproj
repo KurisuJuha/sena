@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\ast\AST.csproj" />
+    <ProjectReference Include="..\AST\AST.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
