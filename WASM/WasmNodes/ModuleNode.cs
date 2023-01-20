@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace sena.Wasm.WasmNode;
+namespace sena.Wasm.Nodes;
 
 public class ModuleNode : IWasmNode
 {
@@ -13,6 +13,6 @@ public class ModuleNode : IWasmNode
 
     public string ToCode()
     {
-        return $"(module{nodes.Select(n => n.ToCode())})";
+        return $"(module{string.Join("", nodes.Select(n => n.ToCode()))})";
     }
 }

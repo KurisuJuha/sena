@@ -1,5 +1,5 @@
 ﻿using sena.AST;
-using System.Text;
+using sena.Wasm.Nodes;
 
 namespace sena.Wasm;
 
@@ -12,27 +12,21 @@ public class AST2Wasm
         this.root = root;
     }
 
-    public string Compile() => CompileNode(root);
+    public string Compile() => CompileNode(root).ToCode();
 
-    private string CompileNode(INode node)
+    private IWasmNode CompileNode(INode node)
     {
         switch (node)
         {
             case Root root:
                 return CompileRoot(root);
             default:
-                return "";
+                throw new Exception($"{node.GetType().Name}をIWasmNodeに変換できません。");
         }
     }
 
-    private string CompileRoot(Root root)
+    private IWasmNode CompileRoot(Root root)
     {
-        StringBuilder builder = new StringBuilder();
-        builder.Append("(module");
-        builder.Append("(memory 1)");
-        builder.Append("(export \"memory\" (memory 0))");
-        builder.Append(")");
-
-        return builder.ToString();
+        return new ModuleNode(root.statements.Select(s => CompileNode(s)).ToArray());
     }
 }
