@@ -1,77 +1,58 @@
-﻿using sena.AST;
+﻿using System.Collections.ObjectModel;
+using sena.AST;
 using sena.AST.Expressions;
 using sena.AST.Statements;
 using sena.Lexing;
-using System.Collections.ObjectModel;
 
 namespace sena.Parsing;
 
 using PrefixParseFunction = Func<IExpression?>;
 using InfixParseFunction = Func<IExpression, IExpression?>;
 
-public class Parser
+public sealed class Parser
 {
-    public Token currentToken { get; private set; }
-    public Token nextToken { get; private set; }
-    readonly Lexer lexer;
-    readonly Errors errors;
-    event Action<string> Log;
-    readonly ReadOnlyDictionary<TokenType, PrefixParseFunction> PrefixParseFunctions;
-    readonly ReadOnlyDictionary<TokenType, InfixParseFunction> InfixParseFunctions;
-    readonly ReadOnlyDictionary<TokenType, Precedence> Precedences;
-    Precedence currentPrecedence
-    {
-        get
-        {
-            if (Precedences.TryGetValue(currentToken.tokenType, out Precedence value))
-            {
-                return value;
-            }
+    private readonly Errors _errors;
+    private readonly ReadOnlyDictionary<TokenType, InfixParseFunction> _infixParseFunctions;
+    private readonly Lexer _lexer;
+    private readonly ReadOnlyDictionary<TokenType, Precedence> _precedences;
+    private readonly ReadOnlyDictionary<TokenType, PrefixParseFunction> _prefixParseFunctions;
 
-            return Precedence.LOWEST;
-        }
-    }
-    Precedence nextPrecedence
+    public Parser(Lexer lexer, Errors errors, Action<string>? log = null)
     {
-        get
-        {
-            if (Precedences.TryGetValue(nextToken.tokenType, out Precedence value))
-            {
-                return value;
-            }
+        _lexer = lexer;
+        _errors = errors;
+        Log = Console.WriteLine;
+        if (log != null) Log = log;
+        _prefixParseFunctions = RegisterPrefixParseFunctions().AsReadOnly();
+        _infixParseFunctions = RegisterInfixParseFunctions().AsReadOnly();
+        _precedences = RegisterPrecedences().AsReadOnly();
 
-            return Precedence.LOWEST;
-        }
+        CurrentToken = lexer.NextToken();
+        NextToken = lexer.NextToken();
     }
 
-    public Parser(Lexer lexer, Errors errors, Action<string>? Log = null)
-    {
-        this.lexer = lexer;
-        this.errors = errors;
-        this.Log = Console.WriteLine;
-        if (Log != null) this.Log = Log;
-        PrefixParseFunctions = RegisterPrefixParseFunctions().AsReadOnly();
-        InfixParseFunctions = RegisterInfixParseFunctions().AsReadOnly();
-        Precedences = RegisterPrecedences().AsReadOnly();
+    private Token CurrentToken { get; set; }
+    private Token NextToken { get; set; }
 
-        currentToken = lexer.NextToken();
-        nextToken = lexer.NextToken();
-    }
+    private Precedence CurrentPrecedence =>
+        _precedences.TryGetValue(CurrentToken.tokenType, out var value) ? value : Precedence.LOWEST;
+
+    private Precedence NextPrecedence =>
+        _precedences.TryGetValue(NextToken.tokenType, out var value) ? value : Precedence.LOWEST;
+
+    private event Action<string> Log;
+
     public Root Parse()
     {
-        List<IStatement> statements = new List<IStatement>();
+        var statements = new List<IStatement>();
 
-        while (currentToken.tokenType != TokenType.EOF)
+        while (CurrentToken.tokenType != TokenType.EOF)
         {
-            IStatement? statement = ParseStatement();
+            var statement = ParseStatement();
             if (statement != null)
-            {
                 statements.Add(statement);
-            }
             else
-            {
                 ReadToken();
-            }
         }
 
         return new Root(statements);
@@ -79,70 +60,84 @@ public class Parser
 
     private Dictionary<TokenType, Precedence> RegisterPrecedences()
     {
-        return new Dictionary<TokenType, Precedence>()
+        return new Dictionary<TokenType, Precedence>
         {
             [TokenType.PLUS] = Precedence.SUM,
             [TokenType.MINUS] = Precedence.SUM,
             [TokenType.ASTERISK] = Precedence.PRODUCT,
-            [TokenType.SLASH] = Precedence.PRODUCT,
+            [TokenType.SLASH] = Precedence.PRODUCT
         };
     }
 
     private Dictionary<TokenType, PrefixParseFunction> RegisterPrefixParseFunctions()
     {
-        return new Dictionary<TokenType, PrefixParseFunction>()
+        return new Dictionary<TokenType, PrefixParseFunction>
         {
             [TokenType.IDENTIFIER] = ParseIdentifier,
             [TokenType.INTEGER_LITERAL] = ParseIntLiteral,
             [TokenType.MINUS] = ParsePrefixExpression,
             [TokenType.LPAREN] = ParseGroupedExpression,
             [TokenType.TRUE] = ParseBoolLiteral,
-            [TokenType.FALSE] = ParseBoolLiteral,
+            [TokenType.FALSE] = ParseBoolLiteral
         };
     }
 
     private Dictionary<TokenType, InfixParseFunction> RegisterInfixParseFunctions()
     {
-        return new Dictionary<TokenType, InfixParseFunction>()
+        return new Dictionary<TokenType, InfixParseFunction>
         {
             [TokenType.PLUS] = ParseInfixExpression,
             [TokenType.MINUS] = ParseInfixExpression,
             [TokenType.ASTERISK] = ParseInfixExpression,
-            [TokenType.SLASH] = ParseInfixExpression,
+            [TokenType.SLASH] = ParseInfixExpression
         };
     }
 
     private void ReadToken()
     {
-        currentToken = nextToken;
-        nextToken = lexer.NextToken();
+        CurrentToken = NextToken;
+        NextToken = _lexer.NextToken();
     }
 
     private bool ExpectCurrent(TokenType tokenType)
     {
-        if (currentToken.tokenType == tokenType)
+        if (CurrentToken.tokenType == tokenType)
         {
             ReadToken();
             return true;
         }
 
-        errors.AddError($"{currentToken.tokenType} ではなく {tokenType} である必要があります。");
+        _errors.AddError($"{CurrentToken.tokenType} ではなく {tokenType} である必要があります。");
         return false;
     }
 
     private IStatement? ParseStatement()
     {
-        switch (currentToken.tokenType)
+        switch (CurrentToken.tokenType)
         {
             case TokenType.LET_KEYWORD:
                 return ParseLetStatement();
             case TokenType.RETURN_KEYWORD:
                 return ParseReturnStatement();
+            case TokenType.ILLEGAL:
+            case TokenType.EOF:
+            case TokenType.IDENTIFIER:
+            case TokenType.INTEGER_LITERAL:
+            case TokenType.LPAREN:
+            case TokenType.RPAREN:
+            case TokenType.SEMICOLON:
+            case TokenType.ASSIGN:
+            case TokenType.MINUS:
+            case TokenType.PLUS:
+            case TokenType.ASTERISK:
+            case TokenType.SLASH:
+            case TokenType.TRUE:
+            case TokenType.FALSE:
             default:
-                ExpressionStatement? expressionStatement = ParseExpressionStatement();
+                var expressionStatement = ParseExpressionStatement();
                 if (expressionStatement != null) return expressionStatement;
 
-                errors.AddError(currentToken.tokenType + " から始まる文は存在しません。");
+                _errors.AddError(CurrentToken.tokenType + " から始まる文は存在しません。");
                 return null;
         }
     }
@@ -150,23 +145,20 @@ public class Parser
     private IExpression? ParseExpression(Precedence precedence)
     {
         // 前置
-        PrefixParseFunctions.TryGetValue(currentToken.tokenType, out var prefix);
+        _prefixParseFunctions.TryGetValue(CurrentToken.tokenType, out var prefix);
         if (prefix == null)
         {
-            errors.AddError($"{currentToken.tokenType} から始まる PrefixParseFunction はありません。");
+            _errors.AddError($"{CurrentToken.tokenType} から始まる PrefixParseFunction はありません。");
             return null;
         }
 
-        IExpression? leftExpression = prefix();
+        var leftExpression = prefix();
 
         // 中置
-        while (precedence < currentPrecedence)
+        while (precedence < CurrentPrecedence)
         {
-            InfixParseFunctions.TryGetValue(currentToken.tokenType, out var infix);
-            if (infix == null)
-            {
-                return leftExpression;
-            }
+            _infixParseFunctions.TryGetValue(CurrentToken.tokenType, out var infix);
+            if (infix == null) return leftExpression;
 
             if (leftExpression == null) return null;
             leftExpression = infix(leftExpression);
@@ -175,20 +167,26 @@ public class Parser
         return leftExpression;
     }
 
+    private void OnLog(string obj)
+    {
+        Log?.Invoke(obj);
+    }
+
     #region ParseStatements
+
     private LetStatement? ParseLetStatement()
     {
         // let
         if (!ExpectCurrent(TokenType.LET_KEYWORD)) return null;
 
         // identifier
-        Identifier? name = ParseIdentifier();
+        var name = ParseIdentifier();
 
         // =
         if (!ExpectCurrent(TokenType.ASSIGN)) return null;
 
         // value
-        IExpression? value = ParseExpression(Precedence.LOWEST);
+        var value = ParseExpression(Precedence.LOWEST);
 
         // ;
         if (!ExpectCurrent(TokenType.SEMICOLON)) return null;
@@ -202,13 +200,11 @@ public class Parser
     private ExpressionStatement? ParseExpressionStatement()
     {
         // 式
-        IExpression? expression = ParseExpression(Precedence.LOWEST);
+        var expression = ParseExpression(Precedence.LOWEST);
         if (expression == null) return null;
 
         // ;
-        if (!ExpectCurrent(TokenType.SEMICOLON)) return null;
-
-        return new ExpressionStatement(expression);
+        return !ExpectCurrent(TokenType.SEMICOLON) ? null : new ExpressionStatement(expression);
     }
 
     private ReturnStatement? ParseReturnStatement()
@@ -217,7 +213,7 @@ public class Parser
         if (!ExpectCurrent(TokenType.RETURN_KEYWORD)) return null;
 
         // 式
-        IExpression? expression = ParseExpression(Precedence.LOWEST);
+        var expression = ParseExpression(Precedence.LOWEST);
         if (expression == null) return null;
 
         // ;
@@ -225,28 +221,30 @@ public class Parser
 
         return new ReturnStatement(expression);
     }
+
     #endregion
 
     #region ParseExpressions
+
     private Identifier? ParseIdentifier()
     {
-        if (currentToken.tokenType != TokenType.IDENTIFIER) return null;
-        Identifier identifier = new Identifier(currentToken.literal);
+        if (CurrentToken.tokenType != TokenType.IDENTIFIER) return null;
+        var identifier = new Identifier(CurrentToken.literal);
         ReadToken();
         return identifier;
     }
 
     private IntLiteral? ParseIntLiteral()
     {
-        if (currentToken.tokenType != TokenType.INTEGER_LITERAL) return null;
-        IntLiteral intLiteral = new IntLiteral(currentToken.literal);
+        if (CurrentToken.tokenType != TokenType.INTEGER_LITERAL) return null;
+        var intLiteral = new IntLiteral(CurrentToken.literal);
         ReadToken();
         return intLiteral;
     }
 
-    private BoolLiteral? ParseBoolLiteral()
+    private BoolLiteral ParseBoolLiteral()
     {
-        BoolLiteral boolLiteral = new BoolLiteral(currentToken.tokenType == TokenType.TRUE);
+        var boolLiteral = new BoolLiteral(CurrentToken.tokenType == TokenType.TRUE);
         ReadToken();
 
         return boolLiteral;
@@ -254,36 +252,31 @@ public class Parser
 
     private PrefixExpression? ParsePrefixExpression()
     {
-        string op = currentToken.literal;
+        var op = CurrentToken.literal;
 
         ReadToken();
 
-        IExpression? expression = ParseExpression(Precedence.PREFIX);
-        if (expression == null) return null;
-
-        return new PrefixExpression(op, expression);
+        var expression = ParseExpression(Precedence.PREFIX);
+        return expression == null ? null : new PrefixExpression(op, expression);
     }
 
     private InfixExpression? ParseInfixExpression(IExpression leftExpression)
     {
-        string op = currentToken.literal;
-        Precedence precedence = currentPrecedence;
+        var op = CurrentToken.literal;
+        var precedence = CurrentPrecedence;
         ReadToken();
-        IExpression? rightExpression = ParseExpression(precedence);
-        if (rightExpression == null) return null;
-
-        return new InfixExpression(op, rightExpression, leftExpression);
+        var rightExpression = ParseExpression(precedence);
+        return rightExpression == null ? null : new InfixExpression(op, rightExpression, leftExpression);
     }
 
     private IExpression? ParseGroupedExpression()
     {
         if (!ExpectCurrent(TokenType.LPAREN)) return null;
 
-        IExpression? expression = ParseExpression(Precedence.LOWEST);
+        var expression = ParseExpression(Precedence.LOWEST);
 
-        if (!ExpectCurrent(TokenType.RPAREN)) return null;
-
-        return expression;
+        return !ExpectCurrent(TokenType.RPAREN) ? null : expression;
     }
+
     #endregion
 }
