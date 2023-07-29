@@ -1,21 +1,17 @@
-﻿namespace sena.Parsing
+﻿namespace sena.Parsing;
+
+public class Errors
 {
-    public class Errors
+    private readonly List<string> _errorList = new();
+    public IReadOnlyCollection<string> ErrorList => _errorList;
+
+    public void AddError(string error)
     {
-        private List<string> _errors = new List<string>();
-        public IReadOnlyCollection<string> errors => _errors;
+        _errorList.Add(error);
+    }
 
-        public void AddError(string error)
-        {
-            _errors.Add(error);
-        }
-
-        public void WriteLine(Action<string> Write)
-        {
-            foreach (var error in _errors)
-            {
-                Write(error);
-            }
-        }
+    public void WriteLine(Action<string> write)
+    {
+        foreach (var error in _errorList) write(error);
     }
 }
