@@ -35,10 +35,10 @@ public sealed class Parser
     private Token NextToken { get; set; }
 
     private Precedence CurrentPrecedence =>
-        _precedences.TryGetValue(CurrentToken.tokenType, out var value) ? value : Precedence.LOWEST;
+        _precedences.TryGetValue(CurrentToken.tokenType, out var value) ? value : Precedence.Lowest;
 
     private Precedence NextPrecedence =>
-        _precedences.TryGetValue(NextToken.tokenType, out var value) ? value : Precedence.LOWEST;
+        _precedences.TryGetValue(NextToken.tokenType, out var value) ? value : Precedence.Lowest;
 
     private event Action<string> Log;
 
@@ -62,10 +62,10 @@ public sealed class Parser
     {
         return new Dictionary<TokenType, Precedence>
         {
-            [TokenType.PLUS] = Precedence.SUM,
-            [TokenType.MINUS] = Precedence.SUM,
-            [TokenType.ASTERISK] = Precedence.PRODUCT,
-            [TokenType.SLASH] = Precedence.PRODUCT
+            [TokenType.PLUS] = Precedence.Sum,
+            [TokenType.MINUS] = Precedence.Sum,
+            [TokenType.ASTERISK] = Precedence.Product,
+            [TokenType.SLASH] = Precedence.Product
         };
     }
 
@@ -186,7 +186,7 @@ public sealed class Parser
         if (!ExpectCurrent(TokenType.ASSIGN)) return null;
 
         // value
-        var value = ParseExpression(Precedence.LOWEST);
+        var value = ParseExpression(Precedence.Lowest);
 
         // ;
         if (!ExpectCurrent(TokenType.SEMICOLON)) return null;
@@ -200,7 +200,7 @@ public sealed class Parser
     private ExpressionStatement? ParseExpressionStatement()
     {
         // 式
-        var expression = ParseExpression(Precedence.LOWEST);
+        var expression = ParseExpression(Precedence.Lowest);
         if (expression == null) return null;
 
         // ;
@@ -213,7 +213,7 @@ public sealed class Parser
         if (!ExpectCurrent(TokenType.RETURN_KEYWORD)) return null;
 
         // 式
-        var expression = ParseExpression(Precedence.LOWEST);
+        var expression = ParseExpression(Precedence.Lowest);
         if (expression == null) return null;
 
         // ;
@@ -256,7 +256,7 @@ public sealed class Parser
 
         ReadToken();
 
-        var expression = ParseExpression(Precedence.PREFIX);
+        var expression = ParseExpression(Precedence.Prefix);
         return expression == null ? null : new PrefixExpression(op, expression);
     }
 
@@ -273,7 +273,7 @@ public sealed class Parser
     {
         if (!ExpectCurrent(TokenType.LPAREN)) return null;
 
-        var expression = ParseExpression(Precedence.LOWEST);
+        var expression = ParseExpression(Precedence.Lowest);
 
         return !ExpectCurrent(TokenType.RPAREN) ? null : expression;
     }
