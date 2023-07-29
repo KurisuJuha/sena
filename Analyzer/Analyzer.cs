@@ -89,7 +89,7 @@ public class Analyzer
         // このidentifierの名前が存在するかどうか
         if (!variableNames.Keys.Contains(identifier.Name)) return null;
 
-        return new ExpressionData(variableNames[identifier.Name].typeName);
+        return new ExpressionData(variableNames[identifier.Name].TypeName);
     }
 
     private ExpressionData? AnalyzeBoolLiteralExpression(BoolLiteral boolLiteral)
@@ -109,9 +109,9 @@ public class Analyzer
         if (right == null) return null;
 
         // 右と左が同じ型か
-        if (right.typeName != left.typeName) return null;
+        if (right.TypeName != left.TypeName) return null;
 
-        return new ExpressionData(left.typeName);
+        return new ExpressionData(left.TypeName);
     }
 
     private ExpressionData? AnalyzePrefixExpression(PrefixExpression prefixExpression)
