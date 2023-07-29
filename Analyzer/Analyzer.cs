@@ -6,7 +6,7 @@ namespace sena.Analyzing;
 
 public class Analyzer
 {
-    readonly Root root;
+    private readonly Root root;
     public Dictionary<string, ExpressionData> variableNames;
 
     public Analyzer(Root root)
@@ -17,7 +17,7 @@ public class Analyzer
 
     public bool Analyze()
     {
-        return root.statements.All(AnalyzeStatement);
+        return root.Statements.All(AnalyzeStatement);
     }
 
     private bool AnalyzeStatement(IStatement statement)
@@ -53,6 +53,7 @@ public class Analyzer
     }
 
     #region Statements
+
     private bool AnalyzeExpressionStatement(ExpressionStatement expressionStatement)
     {
         // 中身の解析
@@ -64,7 +65,7 @@ public class Analyzer
     private bool AnalyzeLetStatement(LetStatement letStatement)
     {
         // 変数の中身について
-        ExpressionData? expressionData = AnalyzeExpression(letStatement.value);
+        var expressionData = AnalyzeExpression(letStatement.value);
         if (expressionData is null) return false;
 
         // 変数の名前について
@@ -73,9 +74,11 @@ public class Analyzer
         variableNames[letStatement.identifier.name] = expressionData;
         return true;
     }
+
     #endregion
 
     #region Expressions
+
     private ExpressionData? AnalyzeIntLiteralExpression(IntLiteral intLiteral)
     {
         return new ExpressionData("sena.Integer");
@@ -96,8 +99,8 @@ public class Analyzer
 
     private ExpressionData? AnalyzeInfixExpression(InfixExpression infixExpression)
     {
-        ExpressionData? left = AnalyzeExpression(infixExpression.leftExpression);
-        ExpressionData? right = AnalyzeExpression(infixExpression.rightExpression);
+        var left = AnalyzeExpression(infixExpression.leftExpression);
+        var right = AnalyzeExpression(infixExpression.rightExpression);
 
         // 左がnullか
         if (left == null) return null;
@@ -113,11 +116,12 @@ public class Analyzer
 
     private ExpressionData? AnalyzePrefixExpression(PrefixExpression prefixExpression)
     {
-        ExpressionData? expressionData = AnalyzeExpression(prefixExpression.expression);
+        var expressionData = AnalyzeExpression(prefixExpression.expression);
 
         if (expressionData == null) return null;
 
         return expressionData;
     }
+
     #endregion
 }

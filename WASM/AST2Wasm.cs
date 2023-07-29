@@ -5,14 +5,17 @@ namespace sena.Wasm;
 
 public class AST2Wasm
 {
-    readonly Root root;
+    private readonly Root root;
 
     public AST2Wasm(Root root)
     {
         this.root = root;
     }
 
-    public string Compile() => CompileNode(root).ToCode();
+    public string Compile()
+    {
+        return CompileNode(root).ToCode();
+    }
 
     private IWasmNode CompileNode(INode node)
     {
@@ -27,9 +30,9 @@ public class AST2Wasm
 
     private IWasmNode CompileRoot(Root root)
     {
-        List<IWasmNode> nodes = new List<IWasmNode>();
+        var nodes = new List<IWasmNode>();
         nodes.Add(new MemoryNode(1));
-        nodes.AddRange(root.statements.Select(s => CompileNode(s)));
+        nodes.AddRange(root.Statements.Select(s => CompileNode(s)));
         return new ModuleNode(nodes.ToArray());
     }
 }

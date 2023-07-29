@@ -28,10 +28,10 @@ public class ParserTest
 
         Assert.Equal(0, errors.ErrorList.Count);
 
-        Assert.Equal(2, root.statements.Count);
-        var letStatement = root.statements[0] as LetStatement;
+        Assert.Equal(2, root.Statements.Count);
+        var letStatement = root.Statements[0] as LetStatement;
         Assert.NotNull(letStatement);
-        var letStatement2 = root.statements[1] as LetStatement;
+        var letStatement2 = root.Statements[1] as LetStatement;
         Assert.NotNull(letStatement2);
         Console.WriteLine(root.ToCode());
     }
@@ -102,8 +102,8 @@ false;
         var root = parser.Parse();
 
         Console.WriteLine(root.ToCode());
-        var boolLiteral1 = (root.statements[0] as ExpressionStatement)?.expression as BoolLiteral;
-        var boolLiteral2 = (root.statements[1] as ExpressionStatement)?.expression as BoolLiteral;
+        var boolLiteral1 = (root.Statements[0] as ExpressionStatement)?.expression as BoolLiteral;
+        var boolLiteral2 = (root.Statements[1] as ExpressionStatement)?.expression as BoolLiteral;
 
         Assert.NotNull(boolLiteral1);
         Assert.NotNull(boolLiteral2);
