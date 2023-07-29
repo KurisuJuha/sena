@@ -69,9 +69,9 @@ public class Analyzer
         if (expressionData is null) return false;
 
         // 変数の名前について
-        if (variableNames.Keys.Contains(letStatement.Identifier.name)) return false;
+        if (variableNames.Keys.Contains(letStatement.Identifier.Name)) return false;
 
-        variableNames[letStatement.Identifier.name] = expressionData;
+        variableNames[letStatement.Identifier.Name] = expressionData;
         return true;
     }
 
@@ -87,9 +87,9 @@ public class Analyzer
     private ExpressionData? AnalyzeIdentifierExpression(Identifier identifier)
     {
         // このidentifierの名前が存在するかどうか
-        if (!variableNames.Keys.Contains(identifier.name)) return null;
+        if (!variableNames.Keys.Contains(identifier.Name)) return null;
 
-        return new ExpressionData(variableNames[identifier.name].typeName);
+        return new ExpressionData(variableNames[identifier.Name].typeName);
     }
 
     private ExpressionData? AnalyzeBoolLiteralExpression(BoolLiteral boolLiteral)

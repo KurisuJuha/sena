@@ -2,15 +2,15 @@
 
 public class Identifier : IExpression
 {
-    public readonly string name;
+    public readonly string Name;
 
     public Identifier(string name)
     {
-        this.name = name;
+        Name = name;
     }
 
     public string ToCode()
     {
-        return name;
+        return Name;
     }
 }
