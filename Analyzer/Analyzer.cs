@@ -99,8 +99,8 @@ public class Analyzer
 
     private ExpressionData? AnalyzeInfixExpression(InfixExpression infixExpression)
     {
-        var left = AnalyzeExpression(infixExpression.leftExpression);
-        var right = AnalyzeExpression(infixExpression.rightExpression);
+        var left = AnalyzeExpression(infixExpression.LeftExpression);
+        var right = AnalyzeExpression(infixExpression.RightExpression);
 
         // 左がnullか
         if (left == null) return null;

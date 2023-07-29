@@ -2,19 +2,19 @@
 
 public class InfixExpression : IExpression
 {
-    public readonly string op;
-    public readonly IExpression rightExpression;
-    public readonly IExpression leftExpression;
+    private readonly string _op;
+    public readonly IExpression LeftExpression;
+    public readonly IExpression RightExpression;
 
     public InfixExpression(string op, IExpression rightExpression, IExpression leftExpression)
     {
-        this.op = op;
-        this.rightExpression = rightExpression;
-        this.leftExpression = leftExpression;
+        _op = op;
+        RightExpression = rightExpression;
+        LeftExpression = leftExpression;
     }
 
     public string ToCode()
     {
-        return $"( {leftExpression.ToCode()} {op} {rightExpression.ToCode()} )";
+        return $"( {LeftExpression.ToCode()} {_op} {RightExpression.ToCode()} )";
     }
 }
