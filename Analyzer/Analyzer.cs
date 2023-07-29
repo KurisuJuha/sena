@@ -65,13 +65,13 @@ public class Analyzer
     private bool AnalyzeLetStatement(LetStatement letStatement)
     {
         // 変数の中身について
-        var expressionData = AnalyzeExpression(letStatement.value);
+        var expressionData = AnalyzeExpression(letStatement.Value);
         if (expressionData is null) return false;
 
         // 変数の名前について
-        if (variableNames.Keys.Contains(letStatement.identifier.name)) return false;
+        if (variableNames.Keys.Contains(letStatement.Identifier.name)) return false;
 
-        variableNames[letStatement.identifier.name] = expressionData;
+        variableNames[letStatement.Identifier.name] = expressionData;
         return true;
     }
 

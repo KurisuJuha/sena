@@ -4,17 +4,17 @@ namespace sena.AST.Statements;
 
 public class LetStatement : IStatement
 {
-    public readonly Identifier identifier;
-    public readonly IExpression value;
+    public readonly Identifier Identifier;
+    public readonly IExpression Value;
 
-    public LetStatement(Identifier identifier,IExpression value)
+    public LetStatement(Identifier identifier, IExpression value)
     {
-        this.identifier = identifier;
-        this.value = value;
+        Identifier = identifier;
+        Value = value;
     }
 
     public string ToCode()
     {
-        return $"let {identifier.ToCode()} = {value.ToCode()};";
+        return $"let {Identifier.ToCode()} = {Value.ToCode()};";
     }
 }
