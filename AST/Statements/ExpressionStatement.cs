@@ -2,15 +2,15 @@
 
 public class ExpressionStatement : IStatement
 {
-    public readonly IExpression expression;
+    public readonly IExpression Expression;
 
     public ExpressionStatement(IExpression expression)
     {
-        this.expression = expression;
+        Expression = expression;
     }
 
     public string ToCode()
     {
-        return $"{expression.ToCode()};";
+        return $"{Expression.ToCode()};";
     }
 }

@@ -57,7 +57,7 @@ public class Analyzer
     private bool AnalyzeExpressionStatement(ExpressionStatement expressionStatement)
     {
         // 中身の解析
-        if (AnalyzeExpression(expressionStatement.expression) is null) return false;
+        if (AnalyzeExpression(expressionStatement.Expression) is null) return false;
 
         return true;
     }

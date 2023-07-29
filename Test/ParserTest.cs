@@ -102,8 +102,8 @@ false;
         var root = parser.Parse();
 
         Console.WriteLine(root.ToCode());
-        var boolLiteral1 = (root.Statements[0] as ExpressionStatement)?.expression as BoolLiteral;
-        var boolLiteral2 = (root.Statements[1] as ExpressionStatement)?.expression as BoolLiteral;
+        var boolLiteral1 = (root.Statements[0] as ExpressionStatement)?.Expression as BoolLiteral;
+        var boolLiteral2 = (root.Statements[1] as ExpressionStatement)?.Expression as BoolLiteral;
 
         Assert.NotNull(boolLiteral1);
         Assert.NotNull(boolLiteral2);
