@@ -2,11 +2,11 @@
 
 public enum Precedence
 {
-    LOWEST = 1,
-    EQUALS,             // ==
-    LESSGREATER,        // ><
-    SUM,                // +-
-    PRODUCT,            // */
-    PREFIX,             // -x !x
-    CALL,               // hoge()
+    Lowest = 1,
+    Equal, // ==
+    LessGreater, // ><
+    Sum, // +-
+    Product, // */
+    Prefix, // -x !x
+    Call // hoge()
 }

@@ -1,5 +1,4 @@
-﻿using sena.AST;
-using sena.AST.Expressions;
+﻿using sena.AST.Expressions;
 using sena.AST.Statements;
 using sena.Parsing;
 using Xunit.Abstractions;
@@ -9,6 +8,7 @@ namespace sena.Test;
 public class ParserTest
 {
     private readonly ITestOutputHelper Console;
+
     public ParserTest(ITestOutputHelper testOutputHelper)
     {
         Console = testOutputHelper;
@@ -17,21 +17,21 @@ public class ParserTest
     [Fact]
     public void LetStatementTest()
     {
-        string code = @"let piyo = poyo; let hoge = -123 + 4 + -100 + a;";
+        var code = @"let piyo = poyo; let hoge = -123 + 4 + -100 + a;";
 
-        Lexer lexer = new Lexer(code);
-        Errors errors = new Errors();
-        Parser parser = new Parser(lexer, errors, Console.WriteLine);
-        Root root = parser.Parse();
+        var lexer = new Lexer(code);
+        var errors = new Errors();
+        var parser = new Parser(lexer, errors, Console.WriteLine);
+        var root = parser.Parse();
 
         errors.WriteLine(Console.WriteLine);
 
-        Assert.Equal(0, errors.errors.Count);
+        Assert.Equal(0, errors.ErrorList.Count);
 
-        Assert.Equal(2, root.statements.Count);
-        LetStatement? letStatement = root.statements[0] as LetStatement;
+        Assert.Equal(2, root.Statements.Count);
+        var letStatement = root.Statements[0] as LetStatement;
         Assert.NotNull(letStatement);
-        LetStatement? letStatement2 = root.statements[1] as LetStatement;
+        var letStatement2 = root.Statements[1] as LetStatement;
         Assert.NotNull(letStatement2);
         Console.WriteLine(root.ToCode());
     }
@@ -39,16 +39,16 @@ public class ParserTest
     [Fact]
     public void ReturnStatementTest()
     {
-        string code = @"return 123;";
+        var code = @"return 123;";
 
-        Lexer lexer = new Lexer(code);
-        Errors errors = new Errors();
-        Parser parser = new Parser(lexer, errors, Console.WriteLine);
-        Root root = parser.Parse();
+        var lexer = new Lexer(code);
+        var errors = new Errors();
+        var parser = new Parser(lexer, errors, Console.WriteLine);
+        var root = parser.Parse();
 
         errors.WriteLine(Console.WriteLine);
 
-        Assert.Equal(0, errors.errors.Count);
+        Assert.Equal(0, errors.ErrorList.Count);
 
         Assert.Equal("return 123;", root.ToCode());
 
@@ -58,16 +58,16 @@ public class ParserTest
     [Fact]
     public void PrefixInfixTest()
     {
-        string code = @"let a = (100 + 100 )* -10 / 2;";
+        var code = @"let a = (100 + 100 )* -10 / 2;";
 
-        Lexer lexer = new Lexer(code);
-        Errors errors = new Errors();
-        Parser parser = new Parser(lexer, errors, Console.WriteLine);
-        Root root = parser.Parse();
+        var lexer = new Lexer(code);
+        var errors = new Errors();
+        var parser = new Parser(lexer, errors, Console.WriteLine);
+        var root = parser.Parse();
 
         errors.WriteLine(Console.WriteLine);
 
-        Assert.Equal(0, errors.errors.Count);
+        Assert.Equal(0, errors.ErrorList.Count);
 
         Console.WriteLine(root.ToCode());
     }
@@ -75,16 +75,16 @@ public class ParserTest
     [Fact]
     public void ExpressionStatementTest()
     {
-        string code = @"hoge; foo;";
+        var code = @"hoge; foo;";
 
-        Lexer lexer = new Lexer(code);
-        Errors errors = new Errors();
-        Parser parser = new Parser(lexer, errors, Console.WriteLine);
-        Root root = parser.Parse();
+        var lexer = new Lexer(code);
+        var errors = new Errors();
+        var parser = new Parser(lexer, errors, Console.WriteLine);
+        var root = parser.Parse();
 
         errors.WriteLine(Console.WriteLine);
 
-        Assert.Equal(0, errors.errors.Count);
+        Assert.Equal(0, errors.ErrorList.Count);
 
         Console.WriteLine(root.ToCode());
     }
@@ -92,18 +92,18 @@ public class ParserTest
     [Fact]
     public void BoolLiteralTest()
     {
-        string code = @"
+        var code = @"
 true;
 false;
 ";
-        Lexer lexer = new Lexer(code);
-        Errors errors = new Errors();
-        Parser parser = new Parser(lexer, errors);
-        Root root = parser.Parse();
+        var lexer = new Lexer(code);
+        var errors = new Errors();
+        var parser = new Parser(lexer, errors);
+        var root = parser.Parse();
 
         Console.WriteLine(root.ToCode());
-        BoolLiteral? boolLiteral1 = (root.statements[0] as ExpressionStatement)?.expression as BoolLiteral;
-        BoolLiteral? boolLiteral2 = (root.statements[1] as ExpressionStatement)?.expression as BoolLiteral;
+        var boolLiteral1 = (root.Statements[0] as ExpressionStatement)?.Expression as BoolLiteral;
+        var boolLiteral2 = (root.Statements[1] as ExpressionStatement)?.Expression as BoolLiteral;
 
         Assert.NotNull(boolLiteral1);
         Assert.NotNull(boolLiteral2);

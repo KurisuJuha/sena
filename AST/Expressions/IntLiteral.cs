@@ -2,15 +2,15 @@
 
 public class IntLiteral : IExpression
 {
-    public readonly string value;
+    private readonly string _value;
 
     public IntLiteral(string value)
     {
-        this.value = value;
+        _value = value;
     }
 
     public string ToCode()
     {
-        return value;
+        return _value;
     }
 }

@@ -2,10 +2,10 @@
 
 public class ExpressionData
 {
-    public readonly string typeName;
+    public readonly string TypeName;
 
     public ExpressionData(string typeName)
     {
-        this.typeName = typeName;
+        TypeName = typeName;
     }
 }
