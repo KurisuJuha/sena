@@ -2,36 +2,38 @@
 
 public class Lexer
 {
-    private readonly string code;
-    private char currentChar
-    {
-        get
-        {
-            if (position < code.Length) return code[position];
-            return (char)0;
-        }
-    }
-    private char nextChar
-    {
-        get
-        {
-            if (position + 1 < code.Length) return code[position + 1];
-            return (char)0;
-        }
-    }
-    private int position;
+    private readonly string _code;
+    private int _position;
 
     public Lexer(string code)
     {
-        this.code = code;
+        _code = code;
+    }
+
+    private char CurrentChar
+    {
+        get
+        {
+            if (_position < _code.Length) return _code[_position];
+            return (char)0;
+        }
+    }
+
+    private char NextChar
+    {
+        get
+        {
+            if (_position + 1 < _code.Length) return _code[_position + 1];
+            return (char)0;
+        }
     }
 
     public Token NextToken()
     {
         SkipWhiteSpace();
-        Token retToken = new Token(currentChar.ToString(), TokenType.ILLEGAL);
+        var retToken = new Token(CurrentChar.ToString(), TokenType.ILLEGAL);
 
-        switch (currentChar)
+        switch (CurrentChar)
         {
             case ';':
                 retToken = new Token(";", TokenType.SEMICOLON);
@@ -58,19 +60,20 @@ public class Lexer
                 retToken = new Token(")", TokenType.RPAREN);
                 break;
             default:
-                if (IsDigit(currentChar))
+                if (IsDigit(CurrentChar))
                 {
                     retToken = new Token(ReadIntegerLiteral(), TokenType.INTEGER_LITERAL);
                 }
-                else if (IsLetter(currentChar))
+                else if (IsLetter(CurrentChar))
                 {
-                    string literal = ReadIdentifier();
+                    var literal = ReadIdentifier();
                     retToken = new Token(literal, LookUpIdentifier(literal));
                 }
-                else if (currentChar == (char)0)
+                else if (CurrentChar == (char)0)
                 {
-                    retToken = new Token(currentChar.ToString(), TokenType.EOF);
+                    retToken = new Token(CurrentChar.ToString(), TokenType.EOF);
                 }
+
                 break;
         }
 
@@ -80,21 +83,19 @@ public class Lexer
 
     private void SkipWhiteSpace()
     {
-        while (currentChar == ' '
-            || currentChar == '\t'
-            || currentChar == '\r'
-            || currentChar == '\n')
-        {
+        while (CurrentChar == ' '
+               || CurrentChar == '\t'
+               || CurrentChar == '\r'
+               || CurrentChar == '\n')
             ReadChar();
-        }
     }
 
     private string ReadIntegerLiteral()
     {
-        string literal = currentChar.ToString();
-        while (IsDigit(nextChar))
+        var literal = CurrentChar.ToString();
+        while (IsDigit(NextChar))
         {
-            literal += nextChar;
+            literal += NextChar;
 
             ReadChar();
         }
@@ -104,11 +105,11 @@ public class Lexer
 
     private string ReadIdentifier()
     {
-        string literal = currentChar.ToString();
+        var literal = CurrentChar.ToString();
 
-        while (IsLetter(nextChar))
+        while (IsLetter(NextChar))
         {
-            literal += nextChar;
+            literal += NextChar;
             ReadChar();
         }
 
@@ -117,28 +118,25 @@ public class Lexer
 
     private TokenType LookUpIdentifier(string literal)
     {
-        if (Token.keywords.TryGetValue(literal, out TokenType value))
-        {
-            return value;
-        }
+        if (Token.keywords.TryGetValue(literal, out var value)) return value;
 
         return TokenType.IDENTIFIER;
     }
 
     private void ReadChar()
     {
-        position++;
+        _position++;
     }
 
-    public static bool IsLetter(char c)
+    private static bool IsLetter(char c)
     {
         return ('a' <= c && c <= 'z')
-            || ('A' <= c && c <= 'Z')
-            || (c == '_');
+               || ('A' <= c && c <= 'Z')
+               || c == '_';
     }
 
-    public static bool IsDigit(char c)
+    private static bool IsDigit(char c)
     {
-        return ('0' <= c && c <= '9');
+        return '0' <= c && c <= '9';
     }
 }
