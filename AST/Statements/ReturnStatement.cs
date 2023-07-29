@@ -2,15 +2,15 @@ namespace sena.AST.Statements;
 
 public class ReturnStatement : IStatement
 {
-    public readonly IExpression expression;
+    private readonly IExpression _expression;
 
     public ReturnStatement(IExpression expression)
     {
-        this.expression = expression;
+        _expression = expression;
     }
 
     public string ToCode()
     {
-        return $"return {expression.ToCode()};";
+        return $"return {_expression.ToCode()};";
     }
 }
