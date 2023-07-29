@@ -116,7 +116,7 @@ public class Analyzer
 
     private ExpressionData? AnalyzePrefixExpression(PrefixExpression prefixExpression)
     {
-        var expressionData = AnalyzeExpression(prefixExpression.expression);
+        var expressionData = AnalyzeExpression(prefixExpression.Expression);
 
         if (expressionData == null) return null;
 

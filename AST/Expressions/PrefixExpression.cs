@@ -2,17 +2,17 @@
 
 public class PrefixExpression : IExpression
 {
-    public readonly string op;
-    public readonly IExpression expression;
+    private readonly string _op;
+    public readonly IExpression Expression;
 
     public PrefixExpression(string op, IExpression expression)
     {
-        this.op = op;
-        this.expression = expression;
+        _op = op;
+        Expression = expression;
     }
 
     public string ToCode()
     {
-        return $"( {op}{expression.ToCode()} )";
+        return $"( {_op}{Expression.ToCode()} )";
     }
 }
