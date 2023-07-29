@@ -7,16 +7,16 @@ public struct Token
 
     public static readonly Dictionary<string, TokenType> Keywords = new()
     {
-        ["let"] = TokenType.LET_KEYWORD,
-        ["true"] = TokenType.TRUE,
-        ["false"] = TokenType.FALSE,
-        ["return"] = TokenType.RETURN_KEYWORD
+        ["let"] = TokenType.LetKeyword,
+        ["true"] = TokenType.True,
+        ["false"] = TokenType.False,
+        ["return"] = TokenType.ReturnKeyword
     };
 
     public Token()
     {
         Literal = "";
-        TokenType = TokenType.ILLEGAL;
+        TokenType = TokenType.Illegal;
     }
 
     public Token(string literal, TokenType tokenType)

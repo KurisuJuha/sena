@@ -3,26 +3,27 @@
 public enum TokenType
 {
     // 不正
-    ILLEGAL,
+    Illegal,
+
     // 終端
-    EOF,
+    Eof,
 
-    IDENTIFIER,         // 識別子
-    INTEGER_LITERAL,    // 整数
+    Identifier, // 識別子
+    IntegerLiteral, // 整数
 
-    LPAREN,             // (
-    RPAREN,             // )
-    SEMICOLON,          // ;
-    ASSIGN,             // =
-    MINUS,              // -
-    PLUS,               // +
-    ASTERISK,           // *
-    SLASH,              // /
+    Lparen, // (
+    Rparen, // )
+    Semicolon, // ;
+    Assign, // =
+    Minus, // -
+    Plus, // +
+    Asterisk, // *
+    Slash, // /
 
-    TRUE,               // true
-    FALSE,              // false
+    True, // true
+    False, // false
 
     // keywords
-    LET_KEYWORD,
-    RETURN_KEYWORD,
+    LetKeyword,
+    ReturnKeyword
 }

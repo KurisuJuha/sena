@@ -46,7 +46,7 @@ public sealed class Parser
     {
         var statements = new List<IStatement>();
 
-        while (CurrentToken.TokenType != TokenType.EOF)
+        while (CurrentToken.TokenType != TokenType.Eof)
         {
             var statement = ParseStatement();
             if (statement != null)
@@ -62,10 +62,10 @@ public sealed class Parser
     {
         return new Dictionary<TokenType, Precedence>
         {
-            [TokenType.PLUS] = Precedence.Sum,
-            [TokenType.MINUS] = Precedence.Sum,
-            [TokenType.ASTERISK] = Precedence.Product,
-            [TokenType.SLASH] = Precedence.Product
+            [TokenType.Plus] = Precedence.Sum,
+            [TokenType.Minus] = Precedence.Sum,
+            [TokenType.Asterisk] = Precedence.Product,
+            [TokenType.Slash] = Precedence.Product
         };
     }
 
@@ -73,12 +73,12 @@ public sealed class Parser
     {
         return new Dictionary<TokenType, PrefixParseFunction>
         {
-            [TokenType.IDENTIFIER] = ParseIdentifier,
-            [TokenType.INTEGER_LITERAL] = ParseIntLiteral,
-            [TokenType.MINUS] = ParsePrefixExpression,
-            [TokenType.LPAREN] = ParseGroupedExpression,
-            [TokenType.TRUE] = ParseBoolLiteral,
-            [TokenType.FALSE] = ParseBoolLiteral
+            [TokenType.Identifier] = ParseIdentifier,
+            [TokenType.IntegerLiteral] = ParseIntLiteral,
+            [TokenType.Minus] = ParsePrefixExpression,
+            [TokenType.Lparen] = ParseGroupedExpression,
+            [TokenType.True] = ParseBoolLiteral,
+            [TokenType.False] = ParseBoolLiteral
         };
     }
 
@@ -86,10 +86,10 @@ public sealed class Parser
     {
         return new Dictionary<TokenType, InfixParseFunction>
         {
-            [TokenType.PLUS] = ParseInfixExpression,
-            [TokenType.MINUS] = ParseInfixExpression,
-            [TokenType.ASTERISK] = ParseInfixExpression,
-            [TokenType.SLASH] = ParseInfixExpression
+            [TokenType.Plus] = ParseInfixExpression,
+            [TokenType.Minus] = ParseInfixExpression,
+            [TokenType.Asterisk] = ParseInfixExpression,
+            [TokenType.Slash] = ParseInfixExpression
         };
     }
 
@@ -115,24 +115,24 @@ public sealed class Parser
     {
         switch (CurrentToken.TokenType)
         {
-            case TokenType.LET_KEYWORD:
+            case TokenType.LetKeyword:
                 return ParseLetStatement();
-            case TokenType.RETURN_KEYWORD:
+            case TokenType.ReturnKeyword:
                 return ParseReturnStatement();
-            case TokenType.ILLEGAL:
-            case TokenType.EOF:
-            case TokenType.IDENTIFIER:
-            case TokenType.INTEGER_LITERAL:
-            case TokenType.LPAREN:
-            case TokenType.RPAREN:
-            case TokenType.SEMICOLON:
-            case TokenType.ASSIGN:
-            case TokenType.MINUS:
-            case TokenType.PLUS:
-            case TokenType.ASTERISK:
-            case TokenType.SLASH:
-            case TokenType.TRUE:
-            case TokenType.FALSE:
+            case TokenType.Illegal:
+            case TokenType.Eof:
+            case TokenType.Identifier:
+            case TokenType.IntegerLiteral:
+            case TokenType.Lparen:
+            case TokenType.Rparen:
+            case TokenType.Semicolon:
+            case TokenType.Assign:
+            case TokenType.Minus:
+            case TokenType.Plus:
+            case TokenType.Asterisk:
+            case TokenType.Slash:
+            case TokenType.True:
+            case TokenType.False:
             default:
                 var expressionStatement = ParseExpressionStatement();
                 if (expressionStatement != null) return expressionStatement;
@@ -177,19 +177,19 @@ public sealed class Parser
     private LetStatement? ParseLetStatement()
     {
         // let
-        if (!ExpectCurrent(TokenType.LET_KEYWORD)) return null;
+        if (!ExpectCurrent(TokenType.LetKeyword)) return null;
 
         // identifier
         var name = ParseIdentifier();
 
         // =
-        if (!ExpectCurrent(TokenType.ASSIGN)) return null;
+        if (!ExpectCurrent(TokenType.Assign)) return null;
 
         // value
         var value = ParseExpression(Precedence.Lowest);
 
         // ;
-        if (!ExpectCurrent(TokenType.SEMICOLON)) return null;
+        if (!ExpectCurrent(TokenType.Semicolon)) return null;
 
         if (name == null) return null;
         if (value == null) return null;
@@ -204,20 +204,20 @@ public sealed class Parser
         if (expression == null) return null;
 
         // ;
-        return !ExpectCurrent(TokenType.SEMICOLON) ? null : new ExpressionStatement(expression);
+        return !ExpectCurrent(TokenType.Semicolon) ? null : new ExpressionStatement(expression);
     }
 
     private ReturnStatement? ParseReturnStatement()
     {
         // return
-        if (!ExpectCurrent(TokenType.RETURN_KEYWORD)) return null;
+        if (!ExpectCurrent(TokenType.ReturnKeyword)) return null;
 
         // 式
         var expression = ParseExpression(Precedence.Lowest);
         if (expression == null) return null;
 
         // ;
-        if (!ExpectCurrent(TokenType.SEMICOLON)) return null;
+        if (!ExpectCurrent(TokenType.Semicolon)) return null;
 
         return new ReturnStatement(expression);
     }
@@ -228,7 +228,7 @@ public sealed class Parser
 
     private Identifier? ParseIdentifier()
     {
-        if (CurrentToken.TokenType != TokenType.IDENTIFIER) return null;
+        if (CurrentToken.TokenType != TokenType.Identifier) return null;
         var identifier = new Identifier(CurrentToken.Literal);
         ReadToken();
         return identifier;
@@ -236,7 +236,7 @@ public sealed class Parser
 
     private IntLiteral? ParseIntLiteral()
     {
-        if (CurrentToken.TokenType != TokenType.INTEGER_LITERAL) return null;
+        if (CurrentToken.TokenType != TokenType.IntegerLiteral) return null;
         var intLiteral = new IntLiteral(CurrentToken.Literal);
         ReadToken();
         return intLiteral;
@@ -244,7 +244,7 @@ public sealed class Parser
 
     private BoolLiteral ParseBoolLiteral()
     {
-        var boolLiteral = new BoolLiteral(CurrentToken.TokenType == TokenType.TRUE);
+        var boolLiteral = new BoolLiteral(CurrentToken.TokenType == TokenType.True);
         ReadToken();
 
         return boolLiteral;
@@ -271,11 +271,11 @@ public sealed class Parser
 
     private IExpression? ParseGroupedExpression()
     {
-        if (!ExpectCurrent(TokenType.LPAREN)) return null;
+        if (!ExpectCurrent(TokenType.Lparen)) return null;
 
         var expression = ParseExpression(Precedence.Lowest);
 
-        return !ExpectCurrent(TokenType.RPAREN) ? null : expression;
+        return !ExpectCurrent(TokenType.Rparen) ? null : expression;
     }
 
     #endregion

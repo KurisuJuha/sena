@@ -31,38 +31,38 @@ public class Lexer
     public Token NextToken()
     {
         SkipWhiteSpace();
-        var retToken = new Token(CurrentChar.ToString(), TokenType.ILLEGAL);
+        var retToken = new Token(CurrentChar.ToString(), TokenType.Illegal);
 
         switch (CurrentChar)
         {
             case ';':
-                retToken = new Token(";", TokenType.SEMICOLON);
+                retToken = new Token(";", TokenType.Semicolon);
                 break;
             case '=':
-                retToken = new Token("=", TokenType.ASSIGN);
+                retToken = new Token("=", TokenType.Assign);
                 break;
             case '+':
-                retToken = new Token("+", TokenType.PLUS);
+                retToken = new Token("+", TokenType.Plus);
                 break;
             case '-':
-                retToken = new Token("-", TokenType.MINUS);
+                retToken = new Token("-", TokenType.Minus);
                 break;
             case '*':
-                retToken = new Token("*", TokenType.ASTERISK);
+                retToken = new Token("*", TokenType.Asterisk);
                 break;
             case '/':
-                retToken = new Token("/", TokenType.SLASH);
+                retToken = new Token("/", TokenType.Slash);
                 break;
             case '(':
-                retToken = new Token("(", TokenType.LPAREN);
+                retToken = new Token("(", TokenType.Lparen);
                 break;
             case ')':
-                retToken = new Token(")", TokenType.RPAREN);
+                retToken = new Token(")", TokenType.Rparen);
                 break;
             default:
                 if (IsDigit(CurrentChar))
                 {
-                    retToken = new Token(ReadIntegerLiteral(), TokenType.INTEGER_LITERAL);
+                    retToken = new Token(ReadIntegerLiteral(), TokenType.IntegerLiteral);
                 }
                 else if (IsLetter(CurrentChar))
                 {
@@ -71,7 +71,7 @@ public class Lexer
                 }
                 else if (CurrentChar == (char)0)
                 {
-                    retToken = new Token(CurrentChar.ToString(), TokenType.EOF);
+                    retToken = new Token(CurrentChar.ToString(), TokenType.Eof);
                 }
 
                 break;
@@ -120,7 +120,7 @@ public class Lexer
     {
         if (Token.Keywords.TryGetValue(literal, out var value)) return value;
 
-        return TokenType.IDENTIFIER;
+        return TokenType.Identifier;
     }
 
     private void ReadChar()

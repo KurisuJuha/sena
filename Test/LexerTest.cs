@@ -19,17 +19,17 @@ public class LexerTest
 
         List<(TokenType type, string literal)> tokens = new()
         {
-            (TokenType.SEMICOLON, ";"),
-            (TokenType.SEMICOLON, ";"),
-            (TokenType.SEMICOLON, ";"),
-            (TokenType.SEMICOLON, ";"),
-            (TokenType.SEMICOLON, ";"),
-            (TokenType.SEMICOLON, ";"),
-            (TokenType.SEMICOLON, ";"),
-            (TokenType.SEMICOLON, ";"),
-            (TokenType.SEMICOLON, ";"),
-            (TokenType.SEMICOLON, ";"),
-            (TokenType.SEMICOLON, ";")
+            (TokenType.Semicolon, ";"),
+            (TokenType.Semicolon, ";"),
+            (TokenType.Semicolon, ";"),
+            (TokenType.Semicolon, ";"),
+            (TokenType.Semicolon, ";"),
+            (TokenType.Semicolon, ";"),
+            (TokenType.Semicolon, ";"),
+            (TokenType.Semicolon, ";"),
+            (TokenType.Semicolon, ";"),
+            (TokenType.Semicolon, ";"),
+            (TokenType.Semicolon, ";")
         };
 
         foreach (var token in tokens)
@@ -49,8 +49,8 @@ public class LexerTest
 
         List<(TokenType type, string literal)> tokens = new()
         {
-            (TokenType.ASSIGN, "="),
-            (TokenType.ASSIGN, "=")
+            (TokenType.Assign, "="),
+            (TokenType.Assign, "=")
         };
 
         foreach (var token in tokens)
@@ -70,7 +70,7 @@ public class LexerTest
 
         List<(TokenType type, string literal)> tokens = new()
         {
-            (TokenType.LET_KEYWORD, "let")
+            (TokenType.LetKeyword, "let")
         };
 
         foreach (var token in tokens)
@@ -90,12 +90,12 @@ public class LexerTest
 
         List<(TokenType type, string literal)> tokens = new()
         {
-            (TokenType.PLUS, "+"),
-            (TokenType.MINUS, "-"),
-            (TokenType.PLUS, "+"),
-            (TokenType.PLUS, "+"),
-            (TokenType.MINUS, "-"),
-            (TokenType.MINUS, "-")
+            (TokenType.Plus, "+"),
+            (TokenType.Minus, "-"),
+            (TokenType.Plus, "+"),
+            (TokenType.Plus, "+"),
+            (TokenType.Minus, "-"),
+            (TokenType.Minus, "-")
         };
 
         foreach (var token in tokens)
@@ -115,10 +115,10 @@ public class LexerTest
 
         List<(TokenType type, string literal)> tokens = new()
         {
-            (TokenType.ASTERISK, "*"),
-            (TokenType.SLASH, "/"),
-            (TokenType.ASTERISK, "*"),
-            (TokenType.SLASH, "/")
+            (TokenType.Asterisk, "*"),
+            (TokenType.Slash, "/"),
+            (TokenType.Asterisk, "*"),
+            (TokenType.Slash, "/")
         };
 
         foreach (var token in tokens)
@@ -138,11 +138,11 @@ public class LexerTest
 
         List<(TokenType type, string literal)> tokens = new()
         {
-            (TokenType.TRUE, "true"),
-            (TokenType.FALSE, "false"),
-            (TokenType.TRUE, "true"),
-            (TokenType.TRUE, "true"),
-            (TokenType.FALSE, "false")
+            (TokenType.True, "true"),
+            (TokenType.False, "false"),
+            (TokenType.True, "true"),
+            (TokenType.True, "true"),
+            (TokenType.False, "false")
         };
 
         foreach (var token in tokens)
@@ -162,7 +162,7 @@ public class LexerTest
 
         List<(TokenType type, string literal)> tokens = new()
         {
-            (TokenType.RETURN_KEYWORD, "return")
+            (TokenType.ReturnKeyword, "return")
         };
 
         foreach (var token in tokens)
