@@ -2,15 +2,15 @@
 
 public class BoolLiteral : IExpression
 {
-    public readonly bool value;
+    private readonly bool _value;
 
     public BoolLiteral(bool value)
     {
-        this.value = value;
+        _value = value;
     }
 
     public string ToCode()
     {
-        return value ? "true" : "false";
+        return _value ? "true" : "false";
     }
 }
