@@ -5,6 +5,7 @@ namespace sena.Test;
 public class LexerTest
 {
     private readonly ITestOutputHelper Console;
+
     public LexerTest(ITestOutputHelper testOutputHelper)
     {
         Console = testOutputHelper;
@@ -13,10 +14,10 @@ public class LexerTest
     [Fact]
     public void SemicolonTest()
     {
-        string code = @"; ;;; ;;;;;; ;";
-        Lexer lexer = new Lexer(code);
+        var code = @"; ;;; ;;;;;; ;";
+        var lexer = new Lexer(code);
 
-        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        List<(TokenType type, string literal)> tokens = new()
         {
             (TokenType.SEMICOLON, ";"),
             (TokenType.SEMICOLON, ";"),
@@ -28,148 +29,148 @@ public class LexerTest
             (TokenType.SEMICOLON, ";"),
             (TokenType.SEMICOLON, ";"),
             (TokenType.SEMICOLON, ";"),
-            (TokenType.SEMICOLON, ";"),
+            (TokenType.SEMICOLON, ";")
         };
 
         foreach (var token in tokens)
         {
-            Token l_token = lexer.NextToken();
+            var l_token = lexer.NextToken();
 
-            Assert.Equal(token.type, l_token.tokenType);
-            Assert.Equal(token.literal, l_token.literal);
+            Assert.Equal(token.type, l_token.TokenType);
+            Assert.Equal(token.literal, l_token.Literal);
         }
     }
 
     [Fact]
     public void AssignTest()
     {
-        string code = @"= =";
-        Lexer lexer = new Lexer(code);
+        var code = @"= =";
+        var lexer = new Lexer(code);
 
-        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        List<(TokenType type, string literal)> tokens = new()
         {
             (TokenType.ASSIGN, "="),
-            (TokenType.ASSIGN, "="),
+            (TokenType.ASSIGN, "=")
         };
 
         foreach (var token in tokens)
         {
-            Token l_token = lexer.NextToken();
+            var l_token = lexer.NextToken();
 
-            Assert.Equal(token.type, l_token.tokenType);
-            Assert.Equal(token.literal, l_token.literal);
+            Assert.Equal(token.type, l_token.TokenType);
+            Assert.Equal(token.literal, l_token.Literal);
         }
     }
 
     [Fact]
     public void LetKeywordTest()
     {
-        string code = @"let";
-        Lexer lexer = new Lexer(code);
+        var code = @"let";
+        var lexer = new Lexer(code);
 
-        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        List<(TokenType type, string literal)> tokens = new()
         {
-            (TokenType.LET_KEYWORD, "let"),
+            (TokenType.LET_KEYWORD, "let")
         };
 
         foreach (var token in tokens)
         {
-            Token l_token = lexer.NextToken();
+            var l_token = lexer.NextToken();
 
-            Assert.Equal(token.type, l_token.tokenType);
-            Assert.Equal(token.literal, l_token.literal);
+            Assert.Equal(token.type, l_token.TokenType);
+            Assert.Equal(token.literal, l_token.Literal);
         }
     }
 
     [Fact]
     public void MinusPlusTest()
     {
-        string code = @"+ - + + - -";
-        Lexer lexer = new Lexer(code);
+        var code = @"+ - + + - -";
+        var lexer = new Lexer(code);
 
-        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        List<(TokenType type, string literal)> tokens = new()
         {
             (TokenType.PLUS, "+"),
             (TokenType.MINUS, "-"),
             (TokenType.PLUS, "+"),
             (TokenType.PLUS, "+"),
             (TokenType.MINUS, "-"),
-            (TokenType.MINUS, "-"),
+            (TokenType.MINUS, "-")
         };
 
         foreach (var token in tokens)
         {
-            Token l_token = lexer.NextToken();
+            var l_token = lexer.NextToken();
 
-            Assert.Equal(token.type, l_token.tokenType);
-            Assert.Equal(token.literal, l_token.literal);
+            Assert.Equal(token.type, l_token.TokenType);
+            Assert.Equal(token.literal, l_token.Literal);
         }
     }
 
     [Fact]
     public void AsteriskSlashTest()
     {
-        string code = @"* / * /";
-        Lexer lexer = new Lexer(code);
+        var code = @"* / * /";
+        var lexer = new Lexer(code);
 
-        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        List<(TokenType type, string literal)> tokens = new()
         {
             (TokenType.ASTERISK, "*"),
             (TokenType.SLASH, "/"),
             (TokenType.ASTERISK, "*"),
-            (TokenType.SLASH, "/"),
+            (TokenType.SLASH, "/")
         };
 
         foreach (var token in tokens)
         {
-            Token l_token = lexer.NextToken();
+            var l_token = lexer.NextToken();
 
-            Assert.Equal(token.type, l_token.tokenType);
-            Assert.Equal(token.literal, l_token.literal);
+            Assert.Equal(token.type, l_token.TokenType);
+            Assert.Equal(token.literal, l_token.Literal);
         }
     }
 
     [Fact]
     public void TrueFalseTest()
     {
-        string code = @"true false true true false";
-        Lexer lexer = new Lexer(code);
+        var code = @"true false true true false";
+        var lexer = new Lexer(code);
 
-        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        List<(TokenType type, string literal)> tokens = new()
         {
             (TokenType.TRUE, "true"),
             (TokenType.FALSE, "false"),
             (TokenType.TRUE, "true"),
             (TokenType.TRUE, "true"),
-            (TokenType.FALSE, "false"),
+            (TokenType.FALSE, "false")
         };
 
         foreach (var token in tokens)
         {
-            Token l_token = lexer.NextToken();
+            var l_token = lexer.NextToken();
 
-            Assert.Equal(token.type, l_token.tokenType);
-            Assert.Equal(token.literal, l_token.literal);
+            Assert.Equal(token.type, l_token.TokenType);
+            Assert.Equal(token.literal, l_token.Literal);
         }
     }
 
     [Fact]
     public void ReturnTest()
     {
-        string code = @"return";
-        Lexer lexer = new Lexer(code);
+        var code = @"return";
+        var lexer = new Lexer(code);
 
-        List<(TokenType type, string literal)> tokens = new List<(TokenType, string)>()
+        List<(TokenType type, string literal)> tokens = new()
         {
-            (TokenType.RETURN_KEYWORD, "return"),
+            (TokenType.RETURN_KEYWORD, "return")
         };
 
         foreach (var token in tokens)
         {
-            Token l_token = lexer.NextToken();
+            var l_token = lexer.NextToken();
 
-            Assert.Equal(token.type, l_token.tokenType);
-            Assert.Equal(token.literal, l_token.literal);
+            Assert.Equal(token.type, l_token.TokenType);
+            Assert.Equal(token.literal, l_token.Literal);
         }
     }
 }

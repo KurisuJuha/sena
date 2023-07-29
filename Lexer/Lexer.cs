@@ -118,7 +118,7 @@ public class Lexer
 
     private TokenType LookUpIdentifier(string literal)
     {
-        if (Token.keywords.TryGetValue(literal, out var value)) return value;
+        if (Token.Keywords.TryGetValue(literal, out var value)) return value;
 
         return TokenType.IDENTIFIER;
     }

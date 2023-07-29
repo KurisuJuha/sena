@@ -2,30 +2,31 @@
 
 public struct Token
 {
-    public readonly string literal;
-    public readonly TokenType tokenType;
-    public static readonly Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType>
+    public readonly string Literal;
+    public readonly TokenType TokenType;
+
+    public static readonly Dictionary<string, TokenType> Keywords = new()
     {
         ["let"] = TokenType.LET_KEYWORD,
         ["true"] = TokenType.TRUE,
         ["false"] = TokenType.FALSE,
-        ["return"] = TokenType.RETURN_KEYWORD,
+        ["return"] = TokenType.RETURN_KEYWORD
     };
 
     public Token()
     {
-        literal = "";
-        tokenType = TokenType.ILLEGAL;
+        Literal = "";
+        TokenType = TokenType.ILLEGAL;
     }
 
     public Token(string literal, TokenType tokenType)
     {
-        this.literal = literal;
-        this.tokenType = tokenType;
+        Literal = literal;
+        TokenType = tokenType;
     }
 
     public override string ToString()
     {
-        return $"{{literal : {literal} tokenType : {tokenType}}}";
+        return $"{{literal : {Literal} tokenType : {TokenType}}}";
     }
 }

@@ -35,10 +35,10 @@ public sealed class Parser
     private Token NextToken { get; set; }
 
     private Precedence CurrentPrecedence =>
-        _precedences.TryGetValue(CurrentToken.tokenType, out var value) ? value : Precedence.Lowest;
+        _precedences.TryGetValue(CurrentToken.TokenType, out var value) ? value : Precedence.Lowest;
 
     private Precedence NextPrecedence =>
-        _precedences.TryGetValue(NextToken.tokenType, out var value) ? value : Precedence.Lowest;
+        _precedences.TryGetValue(NextToken.TokenType, out var value) ? value : Precedence.Lowest;
 
     private event Action<string> Log;
 
@@ -46,7 +46,7 @@ public sealed class Parser
     {
         var statements = new List<IStatement>();
 
-        while (CurrentToken.tokenType != TokenType.EOF)
+        while (CurrentToken.TokenType != TokenType.EOF)
         {
             var statement = ParseStatement();
             if (statement != null)
@@ -101,19 +101,19 @@ public sealed class Parser
 
     private bool ExpectCurrent(TokenType tokenType)
     {
-        if (CurrentToken.tokenType == tokenType)
+        if (CurrentToken.TokenType == tokenType)
         {
             ReadToken();
             return true;
         }
 
-        _errors.AddError($"{CurrentToken.tokenType} ではなく {tokenType} である必要があります。");
+        _errors.AddError($"{CurrentToken.TokenType} ではなく {tokenType} である必要があります。");
         return false;
     }
 
     private IStatement? ParseStatement()
     {
-        switch (CurrentToken.tokenType)
+        switch (CurrentToken.TokenType)
         {
             case TokenType.LET_KEYWORD:
                 return ParseLetStatement();
@@ -137,7 +137,7 @@ public sealed class Parser
                 var expressionStatement = ParseExpressionStatement();
                 if (expressionStatement != null) return expressionStatement;
 
-                _errors.AddError(CurrentToken.tokenType + " から始まる文は存在しません。");
+                _errors.AddError(CurrentToken.TokenType + " から始まる文は存在しません。");
                 return null;
         }
     }
@@ -145,10 +145,10 @@ public sealed class Parser
     private IExpression? ParseExpression(Precedence precedence)
     {
         // 前置
-        _prefixParseFunctions.TryGetValue(CurrentToken.tokenType, out var prefix);
+        _prefixParseFunctions.TryGetValue(CurrentToken.TokenType, out var prefix);
         if (prefix == null)
         {
-            _errors.AddError($"{CurrentToken.tokenType} から始まる PrefixParseFunction はありません。");
+            _errors.AddError($"{CurrentToken.TokenType} から始まる PrefixParseFunction はありません。");
             return null;
         }
 
@@ -157,7 +157,7 @@ public sealed class Parser
         // 中置
         while (precedence < CurrentPrecedence)
         {
-            _infixParseFunctions.TryGetValue(CurrentToken.tokenType, out var infix);
+            _infixParseFunctions.TryGetValue(CurrentToken.TokenType, out var infix);
             if (infix == null) return leftExpression;
 
             if (leftExpression == null) return null;
@@ -228,23 +228,23 @@ public sealed class Parser
 
     private Identifier? ParseIdentifier()
     {
-        if (CurrentToken.tokenType != TokenType.IDENTIFIER) return null;
-        var identifier = new Identifier(CurrentToken.literal);
+        if (CurrentToken.TokenType != TokenType.IDENTIFIER) return null;
+        var identifier = new Identifier(CurrentToken.Literal);
         ReadToken();
         return identifier;
     }
 
     private IntLiteral? ParseIntLiteral()
     {
-        if (CurrentToken.tokenType != TokenType.INTEGER_LITERAL) return null;
-        var intLiteral = new IntLiteral(CurrentToken.literal);
+        if (CurrentToken.TokenType != TokenType.INTEGER_LITERAL) return null;
+        var intLiteral = new IntLiteral(CurrentToken.Literal);
         ReadToken();
         return intLiteral;
     }
 
     private BoolLiteral ParseBoolLiteral()
     {
-        var boolLiteral = new BoolLiteral(CurrentToken.tokenType == TokenType.TRUE);
+        var boolLiteral = new BoolLiteral(CurrentToken.TokenType == TokenType.TRUE);
         ReadToken();
 
         return boolLiteral;
@@ -252,7 +252,7 @@ public sealed class Parser
 
     private PrefixExpression? ParsePrefixExpression()
     {
-        var op = CurrentToken.literal;
+        var op = CurrentToken.Literal;
 
         ReadToken();
 
@@ -262,7 +262,7 @@ public sealed class Parser
 
     private InfixExpression? ParseInfixExpression(IExpression leftExpression)
     {
-        var op = CurrentToken.literal;
+        var op = CurrentToken.Literal;
         var precedence = CurrentPrecedence;
         ReadToken();
         var rightExpression = ParseExpression(precedence);
