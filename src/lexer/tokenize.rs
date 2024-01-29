@@ -8,11 +8,11 @@ fn stream_tokenize(stream: &mut Stream) -> Vec<Token> {
     let mut tokens = Vec::new();
 
     while stream.source.len() > stream.position {
-        lexeme(stream);
-
         let token = match (stream.get_current_char(), stream.get_next_char()) {
             ('0'..='9', _) => number_tokenize(stream),
             ('a'..='z' | 'A'..='Z' | '_', _) => identifier_tokenize(stream),
+            ('(' | ')', _) => paren_tokenize(stream),
+            (' ' | '\r' | '\n' | '\t', _) => space_tokenize(stream),
             _ => illegal_tokenize(stream),
         };
 
@@ -68,10 +68,35 @@ fn illegal_tokenize(stream: &mut Stream) -> Option<Token> {
     value
 }
 
-fn lexeme(stream: &mut Stream) {
-    while stream.source.len() > stream.position
-        && matches!(stream.get_current_char(), ' ' | '\t' | '\r' | '\n')
-    {
+fn paren_tokenize(stream: &mut Stream) -> Option<Token> {
+    let token = match stream.get_current_char() {
+        '(' => Some(Token::LParen),
+        ')' => Some(Token::RParen),
+        _ => None,
+    };
+
+    if token.is_some() {
         stream.next();
     }
+
+    token
+}
+
+fn space_tokenize(stream: &mut Stream) -> Option<Token> {
+    let mut value = String::new();
+
+    if !is_space(stream.get_current_char()) {
+        return None;
+    }
+
+    while stream.source.len() > stream.position && is_space(stream.get_current_char()) {
+        value.push(stream.get_current_char());
+        stream.next();
+    }
+
+    Some(Token::Space(value))
+}
+
+fn is_space(c: char) -> bool {
+    matches!(c, '\n' | '\r' | ' ' | '\t')
 }
