@@ -1,9 +1,16 @@
-mod lexer;
+mod lexing;
+mod parsing;
 
-use lexer::tokenize::tokenize;
+use lexing::tokenize::tokenize;
+
+use crate::parsing::parse::parse;
 
 fn main() {
-    let tokens = tokenize("      123 test_identifier ( )");
+    let source = "      123 test_identifier ( )";
 
-    println!("{:#?}", tokens)
+    let tokens = tokenize(source);
+    let root = parse(source);
+
+    println!("{:#?}", tokens);
+    println!("{:#?}", root);
 }
